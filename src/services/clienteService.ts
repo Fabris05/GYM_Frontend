@@ -7,13 +7,21 @@ export interface Cliente {
     telefono: string;
     correo: string;
     direccion: string;
-    sede_id: number;
-    fecha_pago: string;
+    sede: { sedeId: number | null };
+    fechaPago: string;
     mensualidad: number;
     descripcion: string;
 }
 
 export async function getClientes(): Promise<Cliente[]> {
     const res = await axios.get("http://localhost:8080/api/clientes");
+    return res.data;
+}
+
+export async function addCliente(cliente: Omit<Cliente, 'id'>): Promise<Cliente> {
+    const res = await axios.post("http://localhost:8080/api/clientes", {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cliente)
+    });
     return res.data;
 }

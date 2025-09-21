@@ -6,7 +6,7 @@ interface ClienteState {
     clientes: Cliente[];
     loading: boolean;
     fetchClientes: () => Promise<void>;
-    //addCliente: (cliente: Cliente) => void;
+    addCliente: (cliente: Omit<Cliente, "id">) => Promise<void>;
     //removeCliente: (id: number) => void;
 }
 
@@ -22,6 +22,15 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             set({ clientes: data });
         } finally {
             set({ loading: false });
+        }
+    },
+    addCliente: async(cliente) => {
+        try{
+            const newCliente = await clienteService.addCliente(cliente);
+            set({clientes:[...get().clientes, newCliente]})
+        }catch(error){
+            console.error("Error adding cliente:", error);
+            throw error;
         }
     }
 }));

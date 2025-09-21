@@ -1,28 +1,92 @@
 import Link from "next/link";
-import { Ripple } from "primereact/ripple";
-import { StyleClass } from "primereact/styleclass";
-import { UserRound } from "lucide-react";
+import {
+    BadgeDollarSign,
+    LayoutDashboard,
+    Package,
+    PanelLeftClose,
+    PanelRightClose,
+    ShieldUser,
+    Truck,
+    UserRound,
+} from "lucide-react";
+import { useSidebarStore } from "@/store/useSidebarStore";
 export default function Sidebar() {
+    const { isOpen, toggle } = useSidebarStore();
+
+    const Menus = [
+        {
+            title: "Dashboard",
+            icon: <LayoutDashboard />,
+        },
+        {
+            title: "Clientes",
+            icon: <UserRound />,
+        },
+        {
+            title: "Inventario",
+            icon: <Package />,
+        },
+        {
+            title: "Proveedores",
+            icon: <Truck />,
+        },
+        {
+            title: "Usuarios",
+            icon: <ShieldUser />,
+        },
+        {
+            title: "Pagos",
+            icon: <BadgeDollarSign />,
+        },
+    ];
+
     return (
-        <aside className="w-64 bg-gray-900 text-white">
-            <div>
-                <ul className="list-none p-1 m-0 overflow-hidden items-center">
-                    <li>
-                        <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:bg-gray-700 transition-duration-350 transition-colors w-full">
-                            <i className="pi pi-home mr-2"></i>
-                            <span className="font-medium">Dashboard</span>
-                            <Ripple />
-                        </a>
-                        <Link
-                            href={"/client"}
-                            className="p-ripple flex cursor-pointer p-3 border-round text-700 hover:bg-gray-700 transition-duration-350 transition-colors w-full"
-                        >
-                            <UserRound size={20} className="mr-2"/>
-                            Clientes
-                        </Link>
-                    </li>
-                </ul>
+        <div
+            className={`${
+                isOpen ? "w-72 p-5 " : "w-20 p-4"
+            } bg-zinc-900 h-screen pt-8 relative duration-300 ease-in-out`}
+        >
+            {/* Toggle Button */}
+            <div
+                className={`absolute cursor-pointer -right-4 top-9 w-8 h-8 p-0.5 bg-zinc-50 border-zinc-100 border-2 rounded-full text-xl flex items-center justify-center ${
+                    !isOpen && "rotate-180"
+                } transition-transform transition-all ease-in-out duration-300 `}
+                onClick={() => toggle()}
+            >
+                {isOpen ? <PanelLeftClose /> : <PanelRightClose />}
             </div>
-        </aside>
+
+            {/* Logo */}
+            <div className="flex gap-x-4 items-center">
+                <img
+                    className={`w-6 h-6 object-contain object-center cursor-pointer ease-in-out duration-3 ${
+                        !isOpen && "rotate-[360deg]"
+                    }`}
+                    src="/vercel.svg"
+                    alt="Logo"
+                ></img>
+                <h1
+                    className={`text-zinc-50 origin-left font-semibold text-xl duration-150 ease-in-out ${
+                        !isOpen && "scale-0"
+                    }`}
+                >
+                    PointFit GYM
+                </h1>
+            </div>
+
+            {/* Menu Items */}
+            <div className=" flex flex-col pt-6 space-y-0.5 ">
+                {Menus.map((item, index) => (
+                    <Link
+                        key={index}
+                        href={`/${item.title.toLowerCase()}`}
+                        className={`flex gap-2 items-center rounded-md py-3 px-4 cursor-pointer hover:text-white text-zinc-50 hover:bg-zinc-600/50 transition-all ease-in-out duration-300`}
+                    >
+                        <span>{item.icon}</span>
+                        <span className={`font-sans duration-150 ease-in-out ${!isOpen && "scale-0"}`}>{item.title}</span>
+                    </Link>
+                ))}
+            </div>
+        </div>
     );
 }
