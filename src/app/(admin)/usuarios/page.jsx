@@ -1,23 +1,25 @@
 "use client";
-import { useEffect } from "react";
-import useModal from "@/hooks/useModal";
-import { UserPlus } from "lucide-react";
+
+import FormUsuarios from "@/components/FormUsuarios";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import useModal from "@/hooks/useModal";
+import { useUserStore } from "@/store/useUserStore";
+import { UserPlus } from "lucide-react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
-import FormClientes from "@/components/FormClientes";
-import { useClienteStore } from "@/store/useClienteStore";
+import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { useEffect } from "react";
 
-export default function ClientPage() {
-    const { clientes, loading, fetchClientes } = useClienteStore();
+export default function page() {
+    const { users, loading, fetchUsers } = useUserStore();
     const { visible, open, close } = useModal();
+
     useEffect(() => {
-        fetchClientes();
-    }, [fetchClientes]);
+        fetchUsers();
+    }, [fetchUsers]);
 
     return (
         <div className="flex">
@@ -27,7 +29,7 @@ export default function ClientPage() {
                 <section className="flex flex-col w-full p-6">
                     <div>
                         <span className="font-sans font-bold text-2xl">
-                            Gestion de Clientes
+                            Gestion de Usuarios
                         </span>
                     </div>
                     <div className="flex justify-end items-center mb-4 gap-4">
@@ -47,7 +49,7 @@ export default function ClientPage() {
                         </div>
                         <div>
                             <Button
-                                label="Añadir cliente"
+                                label="Añadir Usuario"
                                 icon={<UserPlus />}
                                 size="small"
                                 className="gap-2"
@@ -60,11 +62,10 @@ export default function ClientPage() {
                     ) : (
                         <div className="w-5/5">
                             <DataTable
-                                value={clientes}
+                                value={users}
                                 paginator
                                 rows={10}
                                 className="p-datatable-gridlines"
-                                removableSort
                             >
                                 <Column field="nombre" header="Nombre"></Column>
                                 <Column field="dni" header="DNI"></Column>
@@ -72,25 +73,12 @@ export default function ClientPage() {
                                     field="telefono"
                                     header="Telefono"
                                 ></Column>
-                                <Column field="correo" header="Em@il"></Column>
-                                <Column
-                                    field="fechaPago"
-                                    header="Fecha de Pago"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="mensualidad"
-                                    header="Mensualidad"
-                                ></Column>
-                                <Column
-                                    field="descripcion"
-                                    header="Descripción"
-                                ></Column>
+                                <Column field="cargo" header="Cargo"></Column>
                                 <Column></Column>
                             </DataTable>
                         </div>
                     )}
-                    <FormClientes visible={visible} close={close} />
+                    <FormUsuarios visible={visible} close={close} />
                 </section>
             </main>
         </div>

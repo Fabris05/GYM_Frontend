@@ -20,6 +20,8 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             const data = await clienteService.getClientes();
             console.log("Fetched clientes:", data);
             set({ clientes: data });
+        }catch (error) {
+            console.error("Datos no encontrados:", error);
         } finally {
             set({ loading: false });
         }
@@ -29,7 +31,7 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             const newCliente = await clienteService.addCliente(cliente);
             set({clientes:[...get().clientes, newCliente]})
         }catch(error){
-            console.error("Error adding cliente:", error);
+            console.error("Error al agregar cliente:", error);
             throw error;
         }
     }

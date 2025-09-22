@@ -1,27 +1,18 @@
 "use client";
-import { useClienteStore } from "@/store/useClienteStore";
+import { addUser } from "@/services/userService";
+import { useUserStore } from "@/store/useUserStore";
 import { CircleX, Save, X } from "lucide-react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
+import { sedes } from "@/constants/sedes";
+import { cargos } from "@/constants/cargos";
+import { initialUserForm } from "@/constants/initialForms";
 
-export default function FormClientes({ visible, close }) {
-    const { addCliente } = useClienteStore();
-    const [form, setForm] = useState({
-        nombre: "",
-        dni: "",
-        telefono: "",
-        correo: "",
-        direccion: "",
-        sede: { sedeId: 0 },
-        fechaPago: "",
-        mensualidad: 150, // prueba
-        descripcion: "",
-    });
-
-    const fecha = new Date().toISOString().split("T")[0];
+export default function FormUsuarios({ visible, close }) {
+    const [form, setForm] = useState(initialUserForm);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,39 +24,16 @@ export default function FormClientes({ visible, close }) {
 
     const handleSubmit = async () => {
         try {
-            await addCliente({
-                ...form,
-                sede: { sedeId: Number(form.sede.sedeId) },
-                mensualidad: Number(form.mensualidad),
-                fechaPago: fecha,
-            });
+            // await addUser({
+            //     ...form,
+            //     sede: { sedeId: Number(form.sede.sedeId) },
+            //     cargo: form.cargo,
+            // });
+            console.log("Usuario agregado:", form);
         } catch (error) {
-            console.error("Error submitting form:", error);
+            console.error("Error al registrar:", error);
         }
     };
-
-    const sedes = [
-        {
-            nombre: "San Miguel",
-            sede_id: 1,
-        },
-        {
-            nombre: "Magdalena",
-            sede_id: 2,
-        },
-        {
-            nombre: "San Bartolo",
-            sede_id: 3,
-        },
-        {
-            nombre: "Punta Hermosa",
-            sede_id: 4,
-        },
-        {
-            nombre: "Surco",
-            sede_id: 5,
-        },
-    ];
 
     const footerContent = (
         <div>
@@ -79,11 +47,10 @@ export default function FormClientes({ visible, close }) {
             />
         </div>
     );
-
     return (
         <div className="card flex justify-content-center">
             <Dialog
-                header="Agregar nuevo cliente"
+                header="Agregar nuevo usuario"
                 visible={visible}
                 footer={footerContent}
                 onHide={close}
@@ -102,7 +69,7 @@ export default function FormClientes({ visible, close }) {
                             onChange={handleChange}
                         />
                         <small id="nombre-help">
-                            Ingresa el nombre del cliente.
+                            Ingresa el nombre del usuario.
                         </small>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -117,7 +84,7 @@ export default function FormClientes({ visible, close }) {
                             value={form.dni}
                             onChange={handleChange}
                         />
-                        <small id="dni-help">Ingresa el DNI del cliente.</small>
+                        <small id="dni-help">Ingresa el DNI del usuario.</small>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
@@ -133,7 +100,7 @@ export default function FormClientes({ visible, close }) {
                                 onChange={handleChange}
                             />
                             <small id="telefono-help">
-                                Ingresa el teléfono del cliente.
+                                Ingresa el teléfono del usuario.
                             </small>
                         </div>
                         <div className="flex flex-col gap-2">
@@ -149,7 +116,7 @@ export default function FormClientes({ visible, close }) {
                                 onChange={handleChange}
                             />
                             <small id="correo-help">
-                                Ingresa el email del cliente.
+                                Ingresa el email del usuario.
                             </small>
                         </div>
                     </div>
@@ -165,43 +132,51 @@ export default function FormClientes({ visible, close }) {
                             onChange={handleChange}
                         />
                         <small id="direccion-help">
-                            Ingresa la dirección del cliente.
+                            Ingresa la dirección del usuario.
                         </small>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="descripcion">Descripción</label>
-                        <InputText
-                            id="descripcion"
-                            name="descripcion"
-                            aria-describedby="descripcion-help"
-                            className="p-inputtext-sm"
-                            autoComplete="off"
-                            value={form.descripcion}
-                            onChange={handleChange}
-                        />
-                        <small id="descripcion-help">
-                            Ingresa la descripción del cliente.
-                        </small>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="sede">Sede</label>
-                        <Dropdown
-                            name="sedeID"
-                            value={form.sede.sedeId}
-                            options={sedes}
-                            onChange={(e) =>
-                                setForm((prev) => ({
-                                    ...prev,
-                                    sede: { sedeId: e.value },
-                                }))
-                            }
-                            optionLabel="nombre"
-                            optionValue="sede_id"
-                            placeholder="Selecciona una sede"
-                        />
-                        <small id="sede-help">
-                            Selecciona la sede del cliente.
-                        </small>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="sede">Sede</label>
+                            <Dropdown
+                                name="sedeID"
+                                value={form.sede.sedeId}
+                                options={sedes}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        sede: { sedeId: e.value },
+                                    }))
+                                }
+                                optionLabel="nombre"
+                                optionValue="sedeId"
+                                placeholder="Selecciona una sede"
+                            />
+                            <small id="sede-help">
+                                Selecciona la sede del usuario.
+                            </small>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="cargo">Cargo</label>
+                            <Dropdown
+                                name="cargo"
+                                value={form.cargo}
+                                options={cargos}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        cargo: e.value,
+                                    }))
+                                }
+                                optionLabel="cargo"
+                                optionValue="cargo"
+                                placeholder="Selecciona un cargo"
+                            />
+                            <small id="cargo-help">
+                                Selecciona el cargo del usuario.
+                            </small>
+                        </div>
                     </div>
                 </form>
             </Dialog>
