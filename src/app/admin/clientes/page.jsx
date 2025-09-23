@@ -61,10 +61,11 @@ export default function ClientPage() {
                         <div className="w-5/5">
                             <DataTable
                                 value={clientes}
-                                paginator
-                                rows={10}
                                 className="p-datatable-gridlines"
                                 removableSort
+                                paginator 
+                                rows={10} 
+                                rowsPerPageOptions={[5, 10, 25, 50]}
                             >
                                 <Column field="nombre" header="Nombre"></Column>
                                 <Column field="dni" header="DNI"></Column>

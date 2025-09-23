@@ -7,6 +7,7 @@ interface ClienteState {
     loading: boolean;
     fetchClientes: () => Promise<void>;
     addCliente: (cliente: Omit<Cliente, "id">) => Promise<void>;
+    findByDNI : (dni: string) => Cliente | undefined;
     //removeCliente: (id: number) => void;
 }
 
@@ -34,5 +35,9 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             console.error("Error al agregar cliente:", error);
             throw error;
         }
+    },
+    findByDNI: (dni: string) => {
+        const clientes = get().clientes;
+        return clientes.find(cliente => cliente.dni === dni);
     }
 }));

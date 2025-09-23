@@ -19,9 +19,12 @@ export async function getClientes(): Promise<Cliente[]> {
 }
 
 export async function addCliente(cliente: Omit<Cliente, 'id'>): Promise<Cliente> {
-    const res = await axios.post("http://localhost:8080/api/clientes", {
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cliente)
-    });
+    const res = await axios.post(
+        "http://localhost:8080/api/clientes",
+        cliente,
+        {
+            headers: { "Content-Type": "application/json" }
+        }
+    );
     return res.data;
 }

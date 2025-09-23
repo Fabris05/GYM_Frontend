@@ -49,7 +49,7 @@ export default function Sidebar() {
             {/* Toggle Button */}
             <div
                 className={`absolute cursor-pointer -right-4 top-9 w-8 h-8 p-0.5 bg-zinc-50 border-zinc-100 border-2 rounded-full text-xl flex items-center justify-center ${
-                    !isOpen && "rotate-180"
+                    !isOpen && "rotate-360"
                 } transition-transform transition-all ease-in-out duration-300 `}
                 onClick={() => toggle()}
             >
@@ -79,7 +79,7 @@ export default function Sidebar() {
                 {Menus.map((item, index) => (
                     <Link
                         key={index}
-                        href={`/${item.title.toLowerCase()}`}
+                        href={`/admin/${item.title.toLowerCase()}`}
                         className={`flex gap-2 items-center rounded-md py-3 px-4 cursor-pointer hover:text-white text-zinc-50 hover:bg-zinc-600/50 transition-all ease-in-out duration-300`}
                     >
                         <span>{item.icon}</span>

@@ -6,6 +6,8 @@ import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
+import { sedes } from "@/constants/sedes";
+import { successAlert, errorAlert } from "@/utils/alerts";
 
 export default function FormClientes({ visible, close }) {
     const { addCliente } = useClienteStore();
@@ -17,7 +19,7 @@ export default function FormClientes({ visible, close }) {
         direccion: "",
         sede: { sedeId: 0 },
         fechaPago: "",
-        mensualidad: 150, // prueba
+        mensualidad: 150.0, // prueba
         descripcion: "",
     });
 
@@ -39,40 +41,27 @@ export default function FormClientes({ visible, close }) {
                 mensualidad: Number(form.mensualidad),
                 fechaPago: fecha,
             });
+            successAlert(
+                "Cliente agregado con éxito",
+                "El cliente ha sido agregado correctamente."
+            );
         } catch (error) {
-            console.error("Error submitting form:", error);
+            errorAlert(
+                "Error al agregar cliente",
+                "Ha ocurrido un error al agregar el cliente."
+            );
         }
     };
-
-    const sedes = [
-        {
-            nombre: "San Miguel",
-            sede_id: 1,
-        },
-        {
-            nombre: "Magdalena",
-            sede_id: 2,
-        },
-        {
-            nombre: "San Bartolo",
-            sede_id: 3,
-        },
-        {
-            nombre: "Punta Hermosa",
-            sede_id: 4,
-        },
-        {
-            nombre: "Surco",
-            sede_id: 5,
-        },
-    ];
 
     const footerContent = (
         <div>
             <Button
                 label="Guardar"
                 icon={<Save />}
-                onClick={close && handleSubmit}
+                onClick={() => {
+                    close();
+                    handleSubmit();
+                }}
                 severity="success"
                 size="small"
                 className="gap-1"
@@ -196,7 +185,7 @@ export default function FormClientes({ visible, close }) {
                                 }))
                             }
                             optionLabel="nombre"
-                            optionValue="sede_id"
+                            optionValue="sedeId"
                             placeholder="Selecciona una sede"
                         />
                         <small id="sede-help">
