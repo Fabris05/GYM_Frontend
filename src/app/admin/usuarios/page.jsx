@@ -60,7 +60,7 @@ export default function page() {
                     {loading ? (
                         <ProgressSpinner />
                     ) : (
-                        <div className="w-5/5">
+                        <section className="w-5/5 bg-white p-4 border border-gray-300  rounded-lg shadow-md">
                             <DataTable
                                 value={users}
                                 paginator
@@ -76,7 +76,7 @@ export default function page() {
                                 <Column field="cargo" header="Cargo"></Column>
                                 <Column></Column>
                             </DataTable>
-                        </div>
+                        </section>
                     )}
                     <FormUsuarios visible={visible} close={close} />
                 </section>
