@@ -16,6 +16,6 @@ export const errorAlert = (title: string, message: string) => {
         text: message,
         icon: "error",
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
     });
 }

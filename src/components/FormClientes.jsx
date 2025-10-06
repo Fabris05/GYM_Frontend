@@ -5,23 +5,26 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sedes } from "@/constants/sedes";
 import { successAlert, errorAlert } from "@/utils/alerts";
+import { initialClienteForm } from "@/constants/initialForms";
 
-export default function FormClientes({ visible, close }) {
-    const { addCliente } = useClienteStore();
-    const [form, setForm] = useState({
-        nombre: "",
-        dni: "",
-        telefono: "",
-        correo: "",
-        direccion: "",
-        sede: { sedeId: 0 },
-        fechaPago: "",
-        mensualidad: 150.0, // prueba
-        descripcion: "",
-    });
+export default function FormClientes({
+    visible,
+    close,
+    clienteSeleccionado = null,
+    estado = "crear",
+}) {
+    const { addCliente, updateCliente } = useClienteStore();
+    const [form, setForm] = useState(initialClienteForm);
+
+    useEffect(() => {
+        if (clienteSeleccionado && estado === "editar") {
+            setForm(clienteSeleccionado);
+        }
+
+    }, [clienteSeleccionado, estado]);
 
     const fecha = new Date().toISOString().split("T")[0];
 
@@ -35,16 +38,29 @@ export default function FormClientes({ visible, close }) {
 
     const handleSubmit = async () => {
         try {
-            await addCliente({
-                ...form,
-                sede: { sedeId: Number(form.sede.sedeId) },
-                mensualidad: Number(form.mensualidad),
-                fechaPago: fecha,
-            });
-            successAlert(
-                "Cliente agregado con éxito",
-                "El cliente ha sido agregado correctamente."
-            );
+            if (estado === "crear") {
+                await addCliente({
+                    ...form,
+                    sede: { sedeId: Number(form.sede.sedeId) },
+                    mensualidad: Number(form.mensualidad),
+                    fechaPago: fecha,
+                });
+                successAlert(
+                    "Cliente agregado con éxito",
+                    "El cliente ha sido agregado correctamente."
+                );
+            } else {
+                await updateCliente(form.clienteId, {
+                    ...form,
+                    sede: { sedeId: Number(form.sede.sedeId) },
+                    mensualidad: Number(form.mensualidad),
+                });
+                successAlert(
+                    "Cliente actualizado",
+                    "Los datos del cliente se actualizaron correctamente."
+                );
+            }
+            close();
         } catch (error) {
             errorAlert(
                 "Error al agregar cliente",
@@ -56,7 +72,7 @@ export default function FormClientes({ visible, close }) {
     const footerContent = (
         <div>
             <Button
-                label="Guardar"
+                label={estado === "crear" ? "Guardar" : "Actualizar"}
                 icon={<Save />}
                 onClick={() => {
                     close();
@@ -72,10 +88,13 @@ export default function FormClientes({ visible, close }) {
     return (
         <div className="card flex justify-content-center">
             <Dialog
-                header="Agregar nuevo cliente"
+                header={estado === "crear" ? "Añadir cliente" : "Editar cliente"}
                 visible={visible}
                 footer={footerContent}
-                onHide={close}
+                onHide={() => {
+                    close();
+                    clienteSeleccionado = null;
+                }}
                 style={{ width: "40vw" }}
             >
                 <form className="flex flex-col gap-4">

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export interface Cliente {
-    id: number;
+    clienteId: number;
     nombre: string;
     dni: string;
     telefono: string;
@@ -28,3 +28,14 @@ export async function addCliente(cliente: Omit<Cliente, 'id'>): Promise<Cliente>
     );
     return res.data;
 }
+
+export async function findByDNI( dni: string): Promise<Cliente>{
+    const res = await axios.get(`http://localhost:8080/api/clientes/dni/${dni}`);
+    return res.data;
+}
+
+export async function updateCliente( clienteId: number, cliente: Cliente): Promise<Cliente> {
+    const res = await axios.put(`http://localhost:8080/api/clientes/${clienteId}`, cliente);
+    return res.data;
+}
+

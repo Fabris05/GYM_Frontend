@@ -8,3 +8,14 @@ export const initialUserForm = {
     sede: { sedeId: null },
 };
 
+export const initialClienteForm = {
+    nombre: "",
+    dni: "",
+    telefono: "",
+    correo: "",
+    direccion: "",
+    sede: { sedeId: 0 },
+    fechaPago: "",
+    mensualidad: 150.0,
+    descripcion: "",
+}
