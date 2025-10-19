@@ -8,6 +8,9 @@ interface ClienteState {
     fetchClientes: () => Promise<void>;
     addCliente: (cliente: Omit<Cliente, "id">) => Promise<void>;
     findByDNI: (dni: string) => Promise<void>;
+    updateCliente: (id: number, cliente: Cliente) => Promise<void>;
+    deleteCliente: (id: number) => Promise<void>;
+    enableCliente: (id: number) => Promise<void>;
 }
 
 export const useClienteStore = create<ClienteState>((set, get) => ({
@@ -58,6 +61,32 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             });
         } catch (error) {
             console.error("Error al actualizar cliente:", error);
+            throw error;
+        }
+    },
+    deleteCliente: async (id: number) => {
+        try {
+            await clienteService.deleteCliente(id);
+            set({
+                clientes: get().clientes.map((c) =>
+                    c.clienteId == id ? { ...c, eliminado: true } : c
+                ),
+            });
+        } catch (error) {
+            console.error("Error al eliminar cliente:", error);
+            throw error;
+        }
+    },
+    enableCliente: async (id: number) => {
+        try {
+            await clienteService.enableCliente(id);
+            set({
+                clientes: get().clientes.map((c) =>
+                    c.clienteId == id ? { ...c, eliminado: false } : c
+                ),
+            });
+        } catch (error) {
+            console.error("Error al habilitar cliente:", error);
             throw error;
         }
     },

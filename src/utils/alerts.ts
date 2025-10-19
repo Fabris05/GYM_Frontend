@@ -6,7 +6,7 @@ export const successAlert = (title: string, message: string) => {
         text: message,
         icon: "success",
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
     });
 }
 
@@ -19,3 +19,4 @@ export const errorAlert = (title: string, message: string) => {
         timer: 2000
     });
 }
+

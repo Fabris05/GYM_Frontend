@@ -11,10 +11,11 @@ export interface Cliente {
     fechaPago: string;
     mensualidad: number;
     descripcion: string;
+    eliminado: boolean;
 }
 
 export async function getClientes(): Promise<Cliente[]> {
-    const res = await axios.get("http://localhost:8080/api/clientes");
+    const res = await axios.get("http://localhost:8080/api/clientes/eliminados");
     return res.data;
 }
 
@@ -39,3 +40,10 @@ export async function updateCliente( clienteId: number, cliente: Cliente): Promi
     return res.data;
 }
 
+export async function deleteCliente ( clienteId: number): Promise<void> {
+    await axios.delete(`http://localhost:8080/api/clientes/${clienteId}`);
+}
+
+export async function enableCliente ( clienteId: number): Promise<void>{
+    await axios.put(`http://localhost:8080/api/clientes/restaurar/${clienteId}`);
+}

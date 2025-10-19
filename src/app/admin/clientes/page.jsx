@@ -1,11 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import useModal from "@/hooks/useModal";
-import {
-    Pencil,
-    Trash,
-    UserPlus,
-} from "lucide-react";
+import { Eye, EyeOff, Pencil, Trash, UserPlus } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "primereact/button";
@@ -17,12 +13,16 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import SearchCliente from "@/components/SearchCliente";
 import CardClientes from "@/components/CardClientes";
 import { initialClienteForm } from "@/constants/initialForms";
+import TagRow from "@/components/TagRow";
+import { successAlert } from "@/utils/alerts";
 
 export default function ClientPage() {
-    const { clientes, loading, fetchClientes } = useClienteStore();
+    const { clientes, loading, fetchClientes, deleteCliente, enableCliente } =
+        useClienteStore();
     const { visible, open, close } = useModal();
-    const [ estado, setEstado ] = useState("crear");
-    const [ clienteSeleccionado, setClienteSeleccionado ] = useState(initialClienteForm);
+    const [estado, setEstado] = useState("crear");
+    const [clienteSeleccionado, setClienteSeleccionado] =
+        useState(initialClienteForm);
 
     const handleEditar = (cliente) => {
         setClienteSeleccionado(cliente);
@@ -34,6 +34,22 @@ export default function ClientPage() {
         setClienteSeleccionado(initialClienteForm);
         setEstado("crear");
         open();
+    };
+
+    const handleEliminar = (clienteId) => {
+        deleteCliente(clienteId);
+        successAlert(
+            "Cliente eliminado",
+            "Lo podrás habilitar desde el botón correspondiente"
+        );
+    };
+
+    const handleEnable = (clienteId) => {
+        enableCliente(clienteId);
+        successAlert(
+            "Cliente habilitado correctamente",
+            "El cliente ha sido habilitado correctamente."
+        );
     };
 
     useEffect(() => {
@@ -51,13 +67,25 @@ export default function ClientPage() {
                     aria-label="Search"
                     onClick={() => handleEditar(rowData)}
                 />
-                <Button
-                    icon={<Trash size={20} />}
-                    rounded
-                    text
-                    severity="danger"
-                    aria-label="Search"
-                />
+                {rowData.eliminado ? (
+                    <Button
+                        icon={<Eye size={20} />}
+                        rounded
+                        text
+                        severity="danger"
+                        aria-label="Search"
+                        onClick={() => handleEnable(rowData.clienteId)}
+                    />
+                ) : (
+                    <Button
+                        icon={<EyeOff size={20} />}
+                        rounded
+                        text
+                        severity="danger"
+                        aria-label="Search"
+                        onClick={() => handleEliminar(rowData.clienteId)}
+                    />
+                )}
             </div>
         );
     };
@@ -84,7 +112,7 @@ export default function ClientPage() {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-6 mb-4">
-                        <CardClientes />
+                        <CardClientes clientes={clientes} />
                     </div>
 
                     <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
@@ -129,6 +157,12 @@ export default function ClientPage() {
                                     field="descripcion"
                                     header="Descripción"
                                 ></Column>
+                                <Column
+                                    body={(rowData) => (
+                                        <TagRow rowData={rowData} />
+                                    )}
+                                    header="Estado"
+                                />
                                 <Column body={actionBodyTemplate} />
                             </DataTable>
                         )}
