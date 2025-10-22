@@ -1,18 +1,24 @@
 "use client";
-import { addUser } from "@/services/userService";
-import { useUserStore } from "@/store/useUserStore";
-import { CircleX, Save, X } from "lucide-react";
+import { Save } from "lucide-react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sedes } from "@/constants/sedes";
 import { cargos } from "@/constants/cargos";
 import { initialUserForm } from "@/constants/initialForms";
+import { successAlert, errorAlert } from "@/utils/alerts";
+import { useEmpleadoStore } from "@/store/useEmpleadoStore";
 
-export default function FormUsuarios({ visible, close }) {
+export default function FormUsuarios({
+    visible,
+    close,
+    selectedEmpleado,
+    estado,
+}) {
     const [form, setForm] = useState(initialUserForm);
+    const { addEmpleado, updateEmpleado } = useEmpleadoStore();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,21 +30,44 @@ export default function FormUsuarios({ visible, close }) {
 
     const handleSubmit = async () => {
         try {
-            // await addUser({
-            //     ...form,
-            //     sede: { sedeId: Number(form.sede.sedeId) },
-            //     cargo: form.cargo,
-            // });
-            console.log("Usuario agregado:", form);
+            if (estado === "crear") {
+                await addEmpleado({
+                    ...form,
+                    sede: { sedeId: Number(form.sede.sedeId) },
+                    cargo: form.cargo,
+                });
+                close();
+                setForm(initialUserForm);
+                successAlert(
+                    "Usuario agregado exitosamente",
+                    "El nuevo usuario ha sido registrado."
+                );
+            } else {
+                await updateEmpleado(form.empleadoId, {
+                    ...form,
+                    sede: { sedeId: Number(form.sede.sedeId) },
+                    cargo: form.cargo,
+                });
+                close();
+                setForm(initialUserForm);
+                successAlert(
+                    "Empleado actualizado exitosamente",
+                    "El empleado ha sido actualizado."
+                );
+            }
         } catch (error) {
             console.error("Error al registrar:", error);
+            errorAlert(
+                "Error al agregar usuario",
+                "Ha ocurrido un error al registrar el nuevo usuario."
+            );
         }
     };
 
     const footerContent = (
         <div>
             <Button
-                label="Guardar"
+                label={estado === "crear" ? "Guardar" : "Actualizar"}
                 icon={<Save />}
                 onClick={close && handleSubmit}
                 severity="success"
@@ -47,10 +76,24 @@ export default function FormUsuarios({ visible, close }) {
             />
         </div>
     );
+
+    useEffect(() => {
+        if (estado === "editar" && selectedEmpleado) {
+            setForm(selectedEmpleado);
+            console.log("Selected Empleado:", selectedEmpleado);
+        } else if (estado === "crear") {
+            setForm(initialUserForm);
+        }
+    }, [selectedEmpleado, estado]);
+
     return (
         <div className="card flex justify-content-center">
             <Dialog
-                header="Agregar nuevo usuario"
+                header={
+                    estado === "crear"
+                        ? "Registrar nuevo empleado"
+                        : "Actualizar Empleado"
+                }
                 visible={visible}
                 footer={footerContent}
                 onHide={close}
@@ -72,21 +115,24 @@ export default function FormUsuarios({ visible, close }) {
                             Ingresa el nombre del usuario.
                         </small>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="dni">DNI</label>
-                        <InputText
-                            id="dni"
-                            name="dni"
-                            aria-describedby="dni-help"
-                            keyfilter="pnum"
-                            className="p-inputtext-sm"
-                            autoComplete="off"
-                            value={form.dni}
-                            onChange={handleChange}
-                        />
-                        <small id="dni-help">Ingresa el DNI del usuario.</small>
-                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="dni">DNI</label>
+                            <InputText
+                                id="dni"
+                                name="dni"
+                                aria-describedby="dni-help"
+                                keyfilter="pnum"
+                                className="p-inputtext-sm"
+                                autoComplete="off"
+                                value={form.dni}
+                                onChange={handleChange}
+                            />
+                            <small id="dni-help">
+                                Ingresa el DNI del usuario.
+                            </small>
+                        </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="telefono">Teléfono</label>
                             <InputText
@@ -103,45 +149,13 @@ export default function FormUsuarios({ visible, close }) {
                                 Ingresa el teléfono del usuario.
                             </small>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="correo">Em@il</label>
-                            <InputText
-                                id="correo"
-                                name="correo"
-                                aria-describedby="correo-help"
-                                keyfilter="email"
-                                className="p-inputtext-sm"
-                                autoComplete="off"
-                                value={form.correo}
-                                onChange={handleChange}
-                            />
-                            <small id="correo-help">
-                                Ingresa el email del usuario.
-                            </small>
-                        </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="direccion">Dirección</label>
-                        <InputText
-                            id="direccion"
-                            name="direccion"
-                            aria-describedby="direccion-help"
-                            className="p-inputtext-sm"
-                            autoComplete="off"
-                            value={form.direccion}
-                            onChange={handleChange}
-                        />
-                        <small id="direccion-help">
-                            Ingresa la dirección del usuario.
-                        </small>
-                    </div>
-
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="sede">Sede</label>
                             <Dropdown
                                 name="sedeID"
-                                value={form.sede.sedeId}
+                                value={form.sede?.sedeId ?? null}
                                 options={sedes}
                                 onChange={(e) =>
                                     setForm((prev) => ({

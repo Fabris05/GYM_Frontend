@@ -31,7 +31,7 @@ export default function Sidebar() {
             icon: <Truck />,
         },
         {
-            title: "Usuarios",
+            title: "Empleados",
             icon: <ShieldUser />,
         },
         {

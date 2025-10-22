@@ -4,22 +4,69 @@ import FormUsuarios from "@/components/FormUsuarios";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import useModal from "@/hooks/useModal";
-import { useUserStore } from "@/store/useUserStore";
-import { CircleCheck, EyeOff, User, UserPlus } from "lucide-react";
+import { useEmpleadoStore } from "@/store/useEmpleadoStore";
+import { Pencil, UserPlus } from "lucide-react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ButtonsEmpleados from "@/components/ButtonsEmpleados";
+import CardEmpleados from "@/components/CardEmpleados";
+import { Dropdown } from "primereact/dropdown";
+import { initialUserForm } from "@/constants/initialForms";
 
 export default function page() {
-    const { users, loading, fetchUsers } = useUserStore();
+    const { empleados, loading, fetchEmpleados, findByRole } =
+        useEmpleadoStore();
     const { visible, open, close } = useModal();
+    const [selectedEmpleado, setSelectedEmpleado] = useState(initialUserForm);
+    const [selectedCargo, setSelectedCargo] = useState("");
+    const [estado, setEstado] = useState("crear");
+
+    const cargos = [
+        { label: "Recepcionista", code: "Recepcionista" },
+        { label: "Entrenador", code: "Entrenador" },
+        { label: "Limpieza", code: "Limpieza" },
+    ];
+
+    const handleCargoChange = async (e) => {
+        const cargoSeleccionado = e.value;
+        setSelectedCargo(cargoSeleccionado);
+        findByRole(cargoSeleccionado.code);
+    };
+
+    const handleEditar = (empleado) => {
+        setSelectedEmpleado(empleado);
+        setEstado("editar");
+        open();
+    };
+
+    const handleAgregar = () => {
+        setSelectedEmpleado(initialUserForm);
+        setEstado("crear");
+        open();
+    };
 
     useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers]);
+        fetchEmpleados();
+    }, [fetchEmpleados]);
+
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <div className="flex gap-2 justify-center">
+                <Button
+                    icon={<Pencil size={20} />}
+                    rounded
+                    text
+                    severity="success"
+                    aria-label="Search"
+                    onClick={() => handleEditar(rowData)}
+                />
+            </div>
+        );
+    };
 
     return (
         <div className="flex">
@@ -37,54 +84,13 @@ export default function page() {
                                 icon={<UserPlus />}
                                 size="small"
                                 className="gap-2"
-                                onClick={open}
+                                onClick={handleAgregar}
                                 severity="contrast"
                             />
                         </div>
                     </section>
                     <section className="grid grid-cols-3 gap-6 mb-4">
-                        <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
-                            <div className="flex flex-col gap-2">
-                                <h3 className="font-sans font-bold text-lg">
-                                    Empleados Totales
-                                </h3>
-                                <span className="font-sans text-gray-900 text-4xl">
-                                    7
-                                </span>
-                            </div>
-                            <div className="flex items-center">
-                                <User size={60} className="text-blue-500" />
-                            </div>
-                        </div>
-                        <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
-                            <div className="flex flex-col gap-2">
-                                <h3 className="font-sans font-bold text-lg">
-                                    Empleados Activos
-                                </h3>
-                                <span className="font-sans text-gray-900 text-4xl">
-                                    7
-                                </span>
-                            </div>
-                            <div className="flex items-center">
-                                <CircleCheck
-                                    size={60}
-                                    className="text-green-500"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
-                            <div className="flex flex-col gap-2">
-                                <h3 className="font-sans font-bold text-lg">
-                                    Empleados Inactivos
-                                </h3>
-                                <span className="font-sans text-gray-900 text-4xl">
-                                    0
-                                </span>
-                            </div>
-                            <div className="flex items-center">
-                                <EyeOff size={60} className="text-red-500" />
-                            </div>
-                        </div>
+                        <CardEmpleados usuarios={empleados} />
                     </section>
                     <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
                         <div className="flex items-center">
@@ -100,6 +106,14 @@ export default function page() {
                                     size="small"
                                 />
                             </div>
+                            <div className="ml-4">
+                                <Dropdown
+                                    value={selectedCargo}
+                                    options={cargos}
+                                    onChange={handleCargoChange}
+                                    placeholder="Selecciona un cargo"
+                                />
+                            </div>
                         </div>
                     </div>
                     {loading ? (
@@ -107,10 +121,12 @@ export default function page() {
                     ) : (
                         <section className="w-5/5 bg-white p-4 border border-gray-300  rounded-lg shadow-md">
                             <DataTable
-                                value={users}
+                                value={empleados}
+                                removableSort
                                 paginator
-                                rows={10}
-                                className="p-datatable-gridlines"
+                                rows={5}
+                                size={"small"}
+                                rowsPerPageOptions={[5, 10, 25, 50]}
                             >
                                 <Column field="nombre" header="Nombre"></Column>
                                 <Column field="dni" header="DNI"></Column>
@@ -118,12 +134,18 @@ export default function page() {
                                     field="telefono"
                                     header="Telefono"
                                 ></Column>
+                                <Column field="sede" header="Sede"></Column>
                                 <Column field="cargo" header="Cargo"></Column>
-                                <Column field="acciones" header="Acciones"></Column>
+                                <Column body={actionBodyTemplate} />
                             </DataTable>
                         </section>
                     )}
-                    <FormUsuarios visible={visible} close={close} />
+                    <FormUsuarios
+                        visible={visible}
+                        close={close}
+                        selectedEmpleado={selectedEmpleado}
+                        estado={estado}
+                    />
                 </section>
             </main>
         </div>
