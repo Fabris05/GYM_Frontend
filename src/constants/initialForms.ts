@@ -24,3 +24,7 @@ export const initialProveedorForm = {
     nombre: "",
     categoria: "",
 };
+export const initialSedeForm = {
+    nombre: "",
+    direccion: "",
+};

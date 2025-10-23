@@ -6,6 +6,7 @@ import {
     PanelLeftClose,
     PanelRightClose,
     ShieldUser,
+    StoreIcon,
     Truck,
     UserRound,
 } from "lucide-react";
@@ -21,6 +22,10 @@ export default function Sidebar() {
         {
             title: "Clientes",
             icon: <UserRound />,
+        },
+        {
+            title: "Sedes",
+            icon: <StoreIcon />,
         },
         {
             title: "Inventario",

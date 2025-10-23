@@ -91,9 +91,9 @@ export default function ClientPage() {
     };
 
     return (
-        <div className="flex">
+        <div className="flex h-screen overflow-hidden">
             <Sidebar />
-            <main className="w-full bg-zinc-50 space-y-4">
+            <main className="flex-1 bg-zinc-50 space-y-4 overflow-y-auto">
                 <Navbar />
                 <section className="flex flex-col w-full p-6">
                     <div className="flex justify-between items-center mb-4">
