@@ -19,3 +19,8 @@ export const initialClienteForm = {
     mensualidad: 150.0,
     descripcion: "",
 }
+
+export const initialProveedorForm = {
+    nombre: "",
+    categoria: "",
+};

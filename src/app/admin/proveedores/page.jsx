@@ -9,10 +9,21 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { DataTable } from "primereact/datatable";
 import { useEffect } from "react";
 import { Column } from "primereact/column";
-import CardProveedores from "@/components/CardProveedores";
+import CardProveedores from "@/components/proveedores/CardProveedores";
+import useProveedor from "@/hooks/useProveedor";
+import FormProveedores from "@/components/proveedores/FormProveedores";
 
 export default function PageProveedores() {
     const { loading, proveedores, fetchProveedores } = useProveedorStore();
+    const {
+        handleModalClose,
+        handleSubmit,
+        actionBodyTemplate,
+        selectedProveedor,
+        handleCrear,
+        visible,
+        mode,
+    } = useProveedor();
 
     useEffect(() => {
         fetchProveedores();
@@ -34,7 +45,7 @@ export default function PageProveedores() {
                                 icon={<UserPlus />}
                                 size="small"
                                 className="gap-2"
-                                //onClick={handleAgregar}
+                                onClick={handleCrear}
                                 severity="contrast"
                             />
                         </div>
@@ -60,9 +71,20 @@ export default function PageProveedores() {
                             >
                                 <Column field="nombre" header="Nombre" />
                                 <Column field="categoria" header="Categoría" />
+                                <Column
+                                    body={(rowData) => actionBodyTemplate(rowData)}
+                                    style={{ textAlign: "center", width: "8rem" }}
+                                />
                             </DataTable>
                         )}
                     </section>
+                    <FormProveedores
+                        visible={visible}
+                        handleModalClose={handleModalClose}
+                        handleSubmit={handleSubmit}
+                        selectedProveedor={selectedProveedor}
+                        mode={mode}
+                    />
                 </section>
             </main>
         </div>

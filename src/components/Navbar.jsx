@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "primereact/button";
 export default function Navbar() {
     return (
@@ -8,7 +9,10 @@ export default function Navbar() {
                         <i className="pi pi-user"></i>
                         <span className="font-sans">Fabricio Salazar</span>
                     </div>
-                    <Button icon="pi pi-sign-out" label="Salir" size="small" severity="danger" />
+                    <Link href={"/"} className="flex align-items-center bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-300">
+                        
+                        <span className="font-sans">Salir</span>
+                    </Link>
                 </div>
             </div>
         </header>

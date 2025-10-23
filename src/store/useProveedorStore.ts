@@ -36,7 +36,17 @@ export const useProveedorStore = create<ProveedorState>((set, get) => ({
         }
     },
 
-    updateProveedor: async (proveedorId, proveedor) => {
-        
+    updateProveedor: async (proveedorId: number, proveedor: Proveedor) => {
+        try {
+            const updatedProveedor = await proveedorService.updateProveedor(proveedorId, proveedor);
+            set({
+                proveedores: get().proveedores.map((p) =>
+                    p.proveedorId === proveedorId ? updatedProveedor : p
+                ),
+            });
+        } catch (error) {
+            console.error("Error al actualizar proveedor:", error);
+            throw error;
+        }
     }
 }))

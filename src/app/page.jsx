@@ -1,6 +1,11 @@
 "use client";
 import Navbar from "@/components/web//Navbar";
+import { LocationsSection } from "@/components/web/LocationSection";
+import { PlanesSection } from "@/components/web/PlanesSection";
+import { ServiciosSection } from "@/components/web/ServiciosSection";
+import Footer from "@/components/web/Footer";
 import { ArrowRight, Trophy, Users, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,16 +15,16 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-3xl p-12 flex flex-col justify-center">
-            <h1 className="text-4xl md:text-7xl font-black text-black mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-black text-black mb-6 leading-tight">
               Transforma Tu Cuerpo, Eleva Tu Mente
             </h1>
             <p className="text-xl md:text-2xl text-black/80 mb-8 max-w-2xl">
               Únete a PointFit y descubre el gimnasio que cambiará tu vida. Entrenamientos personalizados, equipamiento de última generación.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-white border-2 border-black text-black hover:bg-black hover:text-yellow-500 font-bold text-lg px-8 rounded-full flex items-center py-2">
+              <Link href="#planes"  className="bg-white border-2 border-black text-black hover:bg-black hover:text-yellow-500 font-bold text-lg px-8 rounded-full flex items-center py-2">
                 Ver Planes
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -57,7 +62,16 @@ export default function Home() {
         </div>
       </div>
     </section>
-
+    <section id="sedes" className="py-24 bg-gray-950">
+      <LocationsSection />
+    </section>
+    <section id="planes" className="py-24 bg-black">
+      <PlanesSection />
+    </section>
+    <section id="servicios" className="py-24 bg-gray-950">
+      <ServiciosSection />
+    </section>
+    <Footer />
     </main>
         
    
