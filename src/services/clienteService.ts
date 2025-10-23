@@ -1,4 +1,5 @@
 import axios from "axios";
+import { PORT } from "@/utils/port";
 
 export interface Cliente {
     clienteId: number;
@@ -15,7 +16,7 @@ export interface Cliente {
 }
 
 export async function getClientes(): Promise<Cliente[]> {
-    const res = await axios.get("http://localhost:8080/api/clientes/eliminados");
+    const res = await axios.get(`http://localhost:${PORT}/api/clientes/eliminados`);
     return res.data;
 }
 
@@ -31,19 +32,19 @@ export async function addCliente(cliente: Omit<Cliente, 'id'>): Promise<Cliente>
 }
 
 export async function findByDNI( dni: string): Promise<Cliente>{
-    const res = await axios.get(`http://localhost:8080/api/clientes/dni/${dni}`);
+    const res = await axios.get(`http://localhost:${PORT}/api/clientes/dni/${dni}`);
     return res.data;
 }
 
 export async function updateCliente( clienteId: number, cliente: Cliente): Promise<Cliente> {
-    const res = await axios.put(`http://localhost:8080/api/clientes/${clienteId}`, cliente);
+    const res = await axios.put(`http://localhost:${PORT}/api/clientes/${clienteId}`, cliente);
     return res.data;
 }
 
 export async function deleteCliente ( clienteId: number): Promise<void> {
-    await axios.delete(`http://localhost:8080/api/clientes/${clienteId}`);
+    await axios.delete(`http://localhost:${PORT}/api/clientes/${clienteId}`);
 }
 
 export async function enableCliente ( clienteId: number): Promise<void>{
-    await axios.put(`http://localhost:8080/api/clientes/restaurar/${clienteId}`);
+    await axios.put(`http://localhost:${PORT}/api/clientes/restaurar/${clienteId}`);
 }
