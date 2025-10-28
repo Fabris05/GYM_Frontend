@@ -28,3 +28,17 @@ export const initialSedeForm = {
     nombre: "",
     direccion: "",
 };
+
+export const initialMaquinaForm = {
+    maquinaId: "",
+    nombre: "",
+    descripcion: "",
+    imagen: "",
+    estado: "Operativa",
+    sede: {
+        sedeId: "",
+    },
+    proveedor: {
+        proveedorId: "",
+    },
+}
