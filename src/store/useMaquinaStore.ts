@@ -9,6 +9,7 @@ interface MaquinaState {
     fetchMaquinas: () => Promise<void>;
     addMaquina: (maquina: Omit<Maquina, 'maquinaId'>) => Promise<void>;
     updateMaquina: (maquinaId: number, maquina: Maquina) => Promise<void>;
+    findByEstado: (estado: string) => Promise<Maquina[]>;
 }
 
 export const useMaquinaStore = create<MaquinaState>((set, get) => ({
@@ -19,6 +20,7 @@ export const useMaquinaStore = create<MaquinaState>((set, get) => ({
         try {
             const data = await MaquinaService.getMaquinas();
             set({ maquinas: data })
+            console.log("Datos cargados:", data);
         } catch (error) {
             console.error("Datos no encontrados:", error);
         }
@@ -45,6 +47,19 @@ export const useMaquinaStore = create<MaquinaState>((set, get) => ({
         } catch (error) {
             console.error("Error al actualizar maquina:", error);
             throw error;
+        }
+    },
+    findByEstado: async (estado: string) => {
+        try {
+            set({ loading: true });
+            const data = await MaquinaService.findByEstado(estado);
+            set({ maquinas: data });
+            return data;
+        } catch (error) {
+            console.error("Error al buscar maquinas por estado:", error);
+            throw error;
+        } finally {
+            set({ loading: false });
         }
     }
 }))

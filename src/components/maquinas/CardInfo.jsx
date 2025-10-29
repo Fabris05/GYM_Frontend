@@ -13,7 +13,7 @@ export default function CardInfo({ maquinas }) {
             <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
                 <div className="flex flex-col gap-2">
                     <h3 className="font-sans font-bold text-lg">
-                        Máq. Totales
+                        Máquinas
                     </h3>
                     <span className="font-sans text-gray-900 text-4xl">
                         {totalMaquinas}
@@ -39,7 +39,7 @@ export default function CardInfo({ maquinas }) {
             <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
                 <div className="flex flex-col gap-2">
                     <h3 className="font-sans font-bold text-lg">
-                        En Mantenimiento
+                        Mantenimiento
                     </h3>
                     <span className="font-sans text-gray-900 text-4xl">
                         {mantenimiento}
@@ -52,7 +52,7 @@ export default function CardInfo({ maquinas }) {
             <div className="flex border border-gray-300 mt-4 rounded-lg shadow-md p-8 justify-between items-center bg-white hover:shadow-lg transition-shadow">
                 <div className="flex flex-col gap-2">
                     <h3 className="font-sans font-bold text-lg">
-                        Fuera de Servicio
+                        Dañadas
                     </h3>
                     <span className="font-sans text-gray-900 text-4xl">
                         {fueraDeServicio}

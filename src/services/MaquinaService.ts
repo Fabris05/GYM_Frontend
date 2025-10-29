@@ -9,10 +9,10 @@ export interface Maquina {
     imagen: string;
     estado: string;
     sede: {
-        sedeId: number;
+        sedeId: number | 1;
     };
     proveedor: {
-        proveedorId: number;
+        proveedorId: number | 1;
     };
 }
 
@@ -28,5 +28,10 @@ export async function addMaquina(maquina: Omit<Maquina, 'maquinaId'>): Promise<M
 
 export async function updateMaquina(maquinaId: number, maquina: Maquina): Promise<Maquina> {
     const res = await axios.put(`http://localhost:${PORT}/api/maquinas/${maquinaId}`, maquina);
+    return res.data;
+}
+
+export async function findByEstado(estado: string): Promise<Maquina[]>{
+    const res = await axios.get(`http://localhost:${PORT}/api/maquinas/estado/${estado}`);
     return res.data;
 }

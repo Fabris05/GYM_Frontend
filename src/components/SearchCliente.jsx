@@ -3,7 +3,6 @@ import { InputText } from "primereact/inputtext";
 import { useState } from "react";
 import { errorAlert } from "@/utils/alerts";
 import { useClienteStore } from "@/store/useClienteStore";
-import { ListRestart } from "lucide-react";
 
 export default function SearchCliente({ fetchClientes }) {
     const { clientes, findByDNI } = useClienteStore();

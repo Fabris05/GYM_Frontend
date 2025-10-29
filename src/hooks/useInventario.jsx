@@ -5,13 +5,15 @@ import { successAlert, errorAlert } from "@/utils/alerts";
 import { useMaquinaStore } from "@/store/useMaquinaStore";
 
 export default function useInventario() {
-    const { addMaquina, updateMaquina } = useMaquinaStore();
-    const { open, close, visible } = useModal();
+    const { addMaquina, updateMaquina, findByEstado } = useMaquinaStore();
+    const { open, close, visible, openView, closeView, visibleView } =
+        useModal();
     const [mode, setMode] = useState("crear");
     const [selectedItem, setSelectedItem] = useState(initialMaquinaForm);
 
     const handleCloseModal = () => {
         close();
+        setSelectedItem(initialMaquinaForm);
     };
 
     const handleCrear = () => {
@@ -25,6 +27,24 @@ export default function useInventario() {
         setSelectedItem(item);
         open();
     };
+
+    const handleOpenView = (item) => {
+        setSelectedItem(item);
+        openView();
+    };
+
+    const handleCloseViewModal = () => {
+        closeView();
+        //setSelectedItem(initialMaquinaForm);
+    };
+
+    const handleFindByEstado = async (estado) => {
+        try {
+            await findByEstado(estado);
+        } catch (error) {
+            console.error("Error al buscar por estado:", error);
+        }
+    }
 
     const saveMaquina = async (form) => {
         await addMaquina(form);
@@ -50,17 +70,24 @@ export default function useInventario() {
         );
     };
 
-    const onSubmit = (form) => {
+    const onSubmit = async (form) => {
         try {
+            const payload = {
+                ...form,
+                sede: { sedeId: form.sede?.sedeId || 1 },
+                proveedor: { proveedorId: form.proveedor?.proveedorId || 1 },
+            };
+
             if (mode === "crear") {
-                saveMaquina(form);
+                await saveMaquina(payload);
             } else {
-                updatedMaquina(form.maquinaId, form);
+                await updatedMaquina(payload.maquinaId, payload);
             }
+
             handleCloseModal();
             messaggeSuccess();
         } catch (error) {
-            console.error(error);
+            console.error("Error al guardar máquina:", error);
             messaggeError();
         }
     };
@@ -73,5 +100,9 @@ export default function useInventario() {
         handleEditar,
         handleCloseModal,
         onSubmit,
+        handleOpenView,
+        handleCloseViewModal,
+        visibleView,
+        handleFindByEstado,
     };
 }

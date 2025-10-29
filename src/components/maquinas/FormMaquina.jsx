@@ -9,6 +9,7 @@ import { FileUpload } from "primereact/fileupload";
 import useInventario from "@/hooks/useInventario";
 import { useSedeStore } from "@/store/useSedeStore";
 import { useProveedorStore } from "@/store/useProveedorStore";
+import { InputTextarea } from "primereact/inputtextarea";
 export default function FormMaquina({
     visible,
     mode,
@@ -23,24 +24,17 @@ export default function FormMaquina({
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === "sedeId") {
-            setForm((prev) => ({
-                ...prev,
-                sede: { sedeId: Number(value) },
-            }));
-        } else if (name === "proveedorId") {
-            setForm((prev) => ({
-                ...prev,
-                proveedor: { proveedorId: Number(value) },
-            }));
-        } else {
-            setForm((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
+        setForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
+
+    const estadosOptions = [
+        { label: "Operativa", value: "Operativa" },
+        { label: "Mantenimiento", value: "Mantenimiento" },
+        { label: "Dañada", value: "Dañada" },
+    ];
 
     const onUpload = (e) => {
         const response = e.xhr.response ? JSON.parse(e.xhr.response) : null;
@@ -69,6 +63,8 @@ export default function FormMaquina({
     useEffect(() => {
         if (selectedItem) {
             setForm(selectedItem);
+        } else {
+            setForm(initialMaquinaForm);
         }
 
         fetchSedes();
@@ -102,7 +98,7 @@ export default function FormMaquina({
                     </div>
                     <div className="flex flex-col gap-2">
                         <label htmlFor="categoria">Descripción</label>
-                        <InputText
+                        <InputTextarea
                             id="descripcion"
                             name="descripcion"
                             aria-describedby="descripcion-help"
@@ -115,36 +111,61 @@ export default function FormMaquina({
                             Ingresa la dirección de la Sede.
                         </small>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="categoria">Estado</label>
-                        <InputText
-                            id="estado"
-                            name="estado"
-                            aria-describedby="estado-help"
-                            className="p-inputtext-sm"
-                            autoComplete="off"
-                            value={form.estado}
-                            readOnly
-                            onChange={handleChange}
-                        />
-                        <small id="estado-help">
-                            El estado está predeterminado como "Operativo".
-                        </small>
-                    </div>
+                    {mode === "crear" ? (
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="categoria">Estado</label>
+                            <InputText
+                                id="estado"
+                                name="estado"
+                                className="p-inputtext-sm"
+                                value={form.estado || "Operativa"}
+                                readOnly
+                            />
+                            <small id="estado-help">
+                                El estado está predeterminado como "Operativa".
+                            </small>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="estado">Estado</label>
+                            <Dropdown
+                                id="estado"
+                                name="estado"
+                                options={estadosOptions}
+                                value={form.estado}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        estado: e.value,
+                                    }))
+                                }
+                                placeholder="Selecciona el estado"
+                                className="p-inputtext-sm"
+                            />
+                            <small id="estado-help">
+                                Selecciona el estado de la máquina.
+                            </small>
+                        </div>
+                    )}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="categoria">Proveedor</label>
                             <Dropdown
                                 id="proveedor"
                                 name="proveedorId"
-                                value={form.proveedor}
+                                value={form.proveedor?.proveedorId || ""}
                                 options={proveedores}
                                 optionLabel="nombre"
                                 optionValue="proveedorId"
                                 className="p-inputtext-sm"
                                 placeholder="Selecciona un proveedor"
                                 readOnly
-                                onChange={handleChange}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        proveedor: { proveedorId: e.value },
+                                    }))
+                                }
                             />
                             <small id="estado-help">
                                 Seleccione el proveedor.
@@ -155,12 +176,17 @@ export default function FormMaquina({
                             <Dropdown
                                 id="sede"
                                 name="sedeId"
-                                value={form.sede}
+                                value={form.sede?.sedeId || ""}
                                 options={sedes}
                                 optionLabel="nombre"
                                 optionValue="sedeId"
                                 placeholder="Selecciona una sede"
-                                onChange={handleChange}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        sede: { sedeId: e.value },
+                                    }))
+                                }
                                 className="p-inputtext-sm"
                             />
                             <small id="estado-help">Seleccione la sede.</small>
