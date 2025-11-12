@@ -73,7 +73,7 @@ export default function Navbar() {
                         ))}
                         <Link
                             className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-md px-4 py-2"
-                            href="/admin/clientes"
+                            href="/admin/dashboard"
                         >
                             Iniciar Sesión
                         </Link>
