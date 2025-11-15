@@ -7,7 +7,7 @@ interface ClienteState {
     loading: boolean;
     fetchClientes: () => Promise<void>;
     addCliente: (cliente: Omit<Cliente, "id">) => Promise<void>;
-    findByDNI: (dni: string) => Promise<void>;
+    findByDNI: (dni: string) => Promise<Cliente>;
     updateCliente: (id: number, cliente: Cliente) => Promise<void>;
     deleteCliente: (id: number) => Promise<void>;
     enableCliente: (id: number) => Promise<void>;
@@ -44,6 +44,7 @@ export const useClienteStore = create<ClienteState>((set, get) => ({
             const data = await clienteService.findByDNI(dni);
             console.log("Cliente encontrado:", data);
             set({ clientes: data ? [data] : [] });
+            return data;
         } catch (error) {
             console.error("Error al buscar cliente por DNI:", error);
             throw error;

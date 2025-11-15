@@ -23,3 +23,8 @@ export async function actualizarPago(pagoId: number, pago: Pago) {
     const res = await axios.put(`http://localhost:${PORT}/api/pagos/${pagoId}`, pago);
     return res.data;
 }
+
+export async function findPagoByClientId(clienteId: number): Promise<Pago[]> {
+    const res = await axios.get(`http://localhost:${PORT}/api/pagos/cliente/${clienteId}`);
+    return res.data;
+}

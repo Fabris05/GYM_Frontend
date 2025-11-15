@@ -12,6 +12,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import EstadoSpan from "@/components/pagos/EstadoSpan";
 import FormPagos from "@/components/pagos/FormPagos";
 import usePago from "@/hooks/usePago";
+import FilterPagos from "@/components/pagos/FilterPagos";
 
 export default function PagosPage() {
     const { pagos, fetchPagos, loading } = usePagoStore();
@@ -55,7 +56,9 @@ export default function PagosPage() {
                         <CardPagos pagos={pagos} />
                     </section>
                     <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        <div className="flex items-center"></div>
+                        <div className="flex items-center">
+                            <FilterPagos fetchPagos={fetchPagos}/>
+                        </div>
                     </div>
                     {loading ? (
                         <ProgressSpinner />
