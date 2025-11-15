@@ -19,4 +19,3 @@ export const errorAlert = (title: string, message: string) => {
         timer: 2000
     });
 }
-

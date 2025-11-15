@@ -1,7 +1,10 @@
 import { CircleCheck, FileClock, HandCoins } from "lucide-react";
+import CountUp from "react-countup";
 
 export default function CardPagos({ pagos = [] }) {
     let totalPagos = pagos.length;
+    let PagosCompletos = pagos.filter( (pago) => pago.estado === "Pagado" ).length;
+    let PagosPendientes = totalPagos - PagosCompletos;
 
     return (
         <>
@@ -11,7 +14,7 @@ export default function CardPagos({ pagos = [] }) {
                         Pagos Totales
                     </h3>
                     <span className="font-sans text-gray-900 text-4xl">
-                        {totalPagos}
+                        <CountUp end={totalPagos || 0} duration={2} />
                     </span>
                 </div>
                 <div className="flex items-center">
@@ -24,7 +27,7 @@ export default function CardPagos({ pagos = [] }) {
                         Pagos Completos
                     </h3>
                     <span className="font-sans text-gray-900 text-4xl">
-                        {0}
+                        <CountUp end={PagosCompletos || 0} duration={2} />
                     </span>
                 </div>
                 <div className="flex items-center">
@@ -36,10 +39,12 @@ export default function CardPagos({ pagos = [] }) {
                     <h3 className="font-sans font-bold text-lg">
                         Pagos Pendientes
                     </h3>
-                    <span className="font-sans text-gray-900 text-4xl">0</span>
+                    <span className="font-sans text-gray-900 text-4xl">
+                        <CountUp end={PagosPendientes || 0} duration={2} />
+                    </span>
                 </div>
                 <div className="flex items-center">
-                    <FileClock  size={60} className="text-red-500" />
+                    <FileClock size={60} className="text-red-500" />
                 </div>
             </div>
         </>

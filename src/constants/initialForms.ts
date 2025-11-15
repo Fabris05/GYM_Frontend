@@ -42,3 +42,9 @@ export const initialMaquinaForm = {
         proveedorId: "",
     },
 }
+
+export const initialPagoForm = {
+    fecha: "",
+    monto: "",
+    estado: "Pendiente"
+}

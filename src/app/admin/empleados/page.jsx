@@ -134,7 +134,7 @@ export default function page() {
                                     field="telefono"
                                     header="Telefono"
                                 ></Column>
-                                <Column field="sede" header="Sede"></Column>
+                                <Column field="sede.nombre" header="Sede"></Column>
                                 <Column field="cargo" header="Cargo"></Column>
                                 <Column body={actionBodyTemplate} />
                             </DataTable>
