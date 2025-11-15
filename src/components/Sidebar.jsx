@@ -8,6 +8,7 @@ import {
     ShieldUser,
     StoreIcon,
     Truck,
+    UserCog,
     UserRound,
 } from "lucide-react";
 import { useSidebarStore } from "@/store/useSidebarStore";
@@ -38,6 +39,10 @@ export default function Sidebar() {
         {
             title: "Empleados",
             icon: <ShieldUser />,
+        },
+        {
+            title: "Usuarios",
+            icon: <UserCog />,
         },
         {
             title: "Pagos",

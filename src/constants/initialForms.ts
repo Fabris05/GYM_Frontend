@@ -48,3 +48,9 @@ export const initialPagoForm = {
     monto: "",
     estado: "Pendiente"
 }
+
+export const initialUsuarioForm = {
+    nombreUsuario: "",
+    password: "",
+    rol: "",
+}
