@@ -9,6 +9,7 @@ interface EmpleadoState {
     addEmpleado: (empleado: Omit<Empleado, 'empleadoId'>) => Promise<void>;
     updateEmpleado: (empleadoId: number, empleado: Empleado) => Promise<void>;
     findByRole: (cargo: string) => Promise<void>;
+    findByDNI: (dni: string) => Promise<void>;
 }
 
 export const useEmpleadoStore = create<EmpleadoState>((set, get) => ({
@@ -56,6 +57,18 @@ export const useEmpleadoStore = create<EmpleadoState>((set, get) => ({
             throw error;
         }finally{
             set({ loading: false });
+        }
+    },
+    findByDNI: async(dni: string) => {
+        try{
+            set({loading: true});
+            const data = await empleadoService.findByDNI(dni);  
+            set({empleados: [data]});
+        }catch(error){
+            console.error("Error al buscar empleado por DNI:", error);
+            throw error;
+        }finally{
+            set({loading: false});
         }
     }
 }))

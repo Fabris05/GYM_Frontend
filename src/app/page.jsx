@@ -1,16 +1,20 @@
 "use client";
-import Navbar from "@/components/web//Navbar";
-import { LocationsSection } from "@/components/web/LocationSection";
-import { PlanesSection } from "@/components/web/PlanesSection";
-import { ServiciosSection } from "@/components/web/ServiciosSection";
-import Footer from "@/components/web/Footer";
-import { ArrowRight, Trophy, Users, Zap } from "lucide-react";
 import Link from "next/link";
+import useLogin from "@/hooks/useLogin";
+import Footer from "@/components/web/Footer";
+import Navbar from "@/components/web//Navbar";
+import { Trophy, Users, Zap } from "lucide-react";
+import ModalLogin from "@/components/auth/ModalLogin";
+import { PlanesSection } from "@/components/web/PlanesSection";
+import { LocationsSection } from "@/components/web/LocationSection";
+import { ServiciosSection } from "@/components/web/ServiciosSection";
 
 export default function Home() {
+    const { visible, handleOpenLogin, handleCloseLogin } = useLogin();
+
     return (
         <main className="min-h-screen">
-            <Navbar />
+            <Navbar handleOpenLogin={handleOpenLogin} />
             <section
                 id="inicio"
                 className="min-h-screen pt-20 bg-black text-white"
@@ -92,6 +96,7 @@ export default function Home() {
                 <ServiciosSection />
             </section>
             <Footer />
+            <ModalLogin visible={visible} handleCloseLogin={handleCloseLogin} />
         </main>
     );
 }

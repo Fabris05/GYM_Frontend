@@ -16,12 +16,19 @@ export default function useUsuario() {
     };
 
     const handleModalClose = () => {
-        setSelectedUsuario(initialUsuarioForm);
+        setSelectedUsuario({
+            ...initialUsuarioForm,
+            nombreUsuario: "",
+            password: "",
+            rol: "",
+        });
         close();
+        console.log(selectedUsuario)
     };
 
     const handleCrear = () => {
         setMode("crear");
+        setSelectedUsuario(initialUsuarioForm);
         handleModalOpen();
     };
 
@@ -35,6 +42,7 @@ export default function useUsuario() {
         await addUsuario(usuario);
         handleModalClose();
         successMessage();
+        setSelectedUsuario(initialUsuarioForm);
     };
 
     const updatedUsuario = async (usuario) => {

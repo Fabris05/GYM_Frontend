@@ -3,14 +3,31 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { usuariosRoles } from "@/constants/usuarios";
 import { useState } from "react";
+import { useUsuarioStore } from "@/store/useUsuarioStore";
+import { ListRestart } from "lucide-react";
 
-export default function FilterUsuarios() {
-
+export default function FilterUsuarios({ fetchUsuarios }) {
+    const { findUsuariosByRol, findByNombreUsuario } = useUsuarioStore();
     const [rol, setRol] = useState(null);
+    const [nombreUsuario, setNombreUsuario] = useState("");
+    const [isFiltered, setIsFiltered] = useState(false);
 
-    const findUsuariosByRol = (e) => {
+    const findByRol = (e) => {
         setRol(e.value);
-        // fetchUsuarios({ rol: e.value });
+        findUsuariosByRol(e.value);
+        setIsFiltered(true);
+    };
+
+    const findByNombreUsr = () => {
+        findByNombreUsuario(nombreUsuario);
+        setIsFiltered(true);
+    };
+
+    const clearFilters = () => {
+        setRol(null);
+        setNombreUsuario("");
+        setIsFiltered(false);
+        fetchUsuarios();
     }
 
     return (
@@ -19,9 +36,9 @@ export default function FilterUsuarios() {
                 <InputText
                     placeholder="usuario@mail.com"
                     className="p-inputtext-sm"
-                    name="dni"
-                    // value={dni}
-                    // onChange={(e) => setDni(e.target.value)}
+                    name="nombreUsuario"
+                    value={nombreUsuario}
+                    onChange={(e) => setNombreUsuario(e.target.value)}
                 />
                 <Button
                     icon="pi pi-search"
@@ -29,7 +46,7 @@ export default function FilterUsuarios() {
                     aria-label="Search"
                     size="small"
                     type="submit"
-                    // onClick={(e) => handleSubmit(e, "dni")}
+                    onClick={(e) => findByNombreUsr(e.target.value)}
                 />
             </div>
             <div>
@@ -38,11 +55,16 @@ export default function FilterUsuarios() {
                     options={usuariosRoles}
                     optionLabel="cargo"
                     optionValue="cargo"
-                    onChange={(e) => findUsuariosByRol(e)}
+                    onChange={(e) => findByRol(e)}
                     value={rol}
                     className="w-50"
                 ></Dropdown>
             </div>
+            {isFiltered && (
+                <div className="">
+                    <Button icon={<ListRestart />} onClick={clearFilters} severity="secondary" />
+                </div>
+            )}
         </div>
     );
 }

@@ -8,6 +8,8 @@ interface UsuarioState {
     loading: boolean;
     addUsuario: (usuario: Omit<Usuario, 'usuarioId'>) => Promise<void>;
     updateUsuario: (usuarioId: number, usuario: Usuario) => Promise<void>;
+    findUsuariosByRol: (rol: string) => void;
+    findByNombreUsuario: (nombreUsuariio: string) => void;
 }
 
 export const useUsuarioStore = create<UsuarioState>((set, get) => ({
@@ -25,14 +27,11 @@ export const useUsuarioStore = create<UsuarioState>((set, get) => ({
         }
     },
     addUsuario: async (usuario) => {
-        set({ loading: true });
         try {
             const newUsuario = await usuarioService.addUsuario(usuario);
             set({ usuarios: [...get().usuarios, newUsuario] });
         } catch (error) {
             console.error("Error adding usuario:", error);
-        } finally {
-            set({ loading: false });
         }
     },
     updateUsuario: async (usuarioId: number, usuario: Usuario) => {
@@ -45,5 +44,13 @@ export const useUsuarioStore = create<UsuarioState>((set, get) => ({
         } catch (error) {
             console.error("Error al actualizar el usuario:", error);
         }
+    },
+    findUsuariosByRol: (rol: string) => {
+        const usuariosFiltrados = get().usuarios.filter((u) => u.rol === rol)
+        set({ usuarios: usuariosFiltrados });
+    },
+    findByNombreUsuario: (nombreUsuariio: string) => {
+        const usuarioFiltrado = get().usuarios.find( (u) => u.nombreUsuario === nombreUsuariio)
+        set({ usuarios: usuarioFiltrado ? [usuarioFiltrado] : [] });
     }
 }))

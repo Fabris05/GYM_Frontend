@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Dumbbell } from "lucide-react";
+import { Button } from "primereact/button";
 
-export default function Navbar() {
+export default function Navbar({ handleOpenLogin }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const navLinks = [
@@ -37,12 +38,13 @@ export default function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
-                        <Link
-                            href="/admin/clientes"
+                        <Button
+                            // href="/admin/clientes"
                             className="bg-yellow-500 hover:bg-yellow-700 text-black font-bold rounded-md px-4 py-2"
+                            onClick={handleOpenLogin}
                         >
                             Iniciar Sesión
-                        </Link>
+                        </Button>
                     </div>
 
                     <button
@@ -71,12 +73,13 @@ export default function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
-                        <Link
+                        <Button
                             className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-md px-4 py-2"
-                            href="/admin/dashboard"
+                            // href="/admin/dashboard"
+                            onClick={handleOpenLogin}
                         >
                             Iniciar Sesión
-                        </Link>
+                        </Button>
                     </div>
                 </div>
             )}

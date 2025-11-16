@@ -35,5 +35,6 @@ export async function findByRole(cargo: string): Promise<Empleado[]>{
 }
 
 export async function findByDNI(dni: string): Promise<Empleado>{
-    return null as any;
+    const res = await axios.get(`http://localhost:${PORT}/api/empleados/dni/${dni}`);
+    return res.data;
 }

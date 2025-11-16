@@ -54,12 +54,11 @@ export default function FormUsuario({
     );
 
     useEffect(() => {
-        if (selectedUsuario) {
+        if (selectedUsuario && mode === "editar") {
             setForm(selectedUsuario);
             setNewPassword(selectedUsuario.password);
         }
-    }, [selectedUsuario]);
-
+    }, [selectedUsuario, mode]);
     return (
         <div className="card flex justify-content-center">
             <Dialog
@@ -67,7 +66,10 @@ export default function FormUsuario({
                 footer={footerContent}
                 style={{ width: "35vw" }}
                 visible={visible}
-                onHide={handleModalClose}
+                onHide={() => {
+                    setForm(initialUsuarioForm);
+                    handleModalClose();
+                }}
             >
                 <form className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">

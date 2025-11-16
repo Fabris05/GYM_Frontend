@@ -16,6 +16,7 @@ import ButtonsEmpleados from "@/components/ButtonsEmpleados";
 import CardEmpleados from "@/components/CardEmpleados";
 import { Dropdown } from "primereact/dropdown";
 import { initialUserForm } from "@/constants/initialForms";
+import FilterEmpleados from "@/components/empleados/FilterEmpleados";
 
 export default function page() {
     const { empleados, loading, fetchEmpleados, findByRole } =
@@ -93,28 +94,7 @@ export default function page() {
                         <CardEmpleados usuarios={empleados} />
                     </section>
                     <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        <div className="flex items-center">
-                            <div className="p-inputgroup">
-                                <InputText
-                                    placeholder="DNI"
-                                    className="p-inputtext-sm"
-                                />
-                                <Button
-                                    icon="pi pi-search"
-                                    severity="secondary"
-                                    aria-label="Search"
-                                    size="small"
-                                />
-                            </div>
-                            <div className="ml-4">
-                                <Dropdown
-                                    value={selectedCargo}
-                                    options={cargos}
-                                    onChange={handleCargoChange}
-                                    placeholder="Selecciona un cargo"
-                                />
-                            </div>
-                        </div>
+                        <FilterEmpleados fetchEmpleados={fetchEmpleados} />
                     </div>
                     {loading ? (
                         <ProgressSpinner />
