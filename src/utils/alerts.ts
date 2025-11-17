@@ -46,6 +46,6 @@ export const confirmLogin = () => {
         text: 'Haz iniciado sesión correctamente, serás redirigido. ¡Bienvenido!',
         icon: 'success',
         showConfirmButton: false,
-        timer: 1500
+        timer: 3000
     })
 }

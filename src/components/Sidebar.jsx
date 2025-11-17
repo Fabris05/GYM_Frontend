@@ -64,23 +64,23 @@ export default function Sidebar() {
     return (
         <div
             className={`${
-                isOpen ? "w-72 p-5 " : "w-20 p-4"
-            } bg-zinc-900 h-screen pt-8 relative duration-300 ease-in-out`}
+                isOpen ? "w-60 p-5 " : "w-20 p-4"
+            } bg-zinc-900 h-screen pt-8 relative duration-500 ease-in-out flex-col justify-center`}
         >
 
             <div
-                className={`absolute cursor-pointer -right-4 top-9 w-8 h-8 p-0.5 bg-zinc-50 border-zinc-100 border-2 rounded-full text-xl flex items-center justify-center ${
-                    !isOpen && "rotate-360"
-                } transition-transform transition-all ease-in-out duration-300 `}
+                className={`absolute cursor-pointer -right-4 top-16 w-8 h-8 p-0.5 bg-zinc-50 border-zinc-100 border-2 rounded-full text-xl flex items-center justify-center ${
+                    !isOpen && "rotate-360 top-20"
+                } transition-transform transition-all ease-in-out duration-900 `}
                 onClick={() => toggle()}
             >
                 {isOpen ? <PanelLeftClose /> : <PanelRightClose />}
             </div>
 
-            <div className="flex gap-x-4 items-center w-full">
+            <div className="flex gap-x-4 items-center">
                 <img
-                    className={`w-6 h-6 object-contain object-center cursor-pointer ease-in-out duration-3 ${
-                        !isOpen && "rotate-[360deg]"
+                    className={`w-6 h-6 object-contain object-center cursor-pointer ease-in-out duration-900 ${
+                        !isOpen && "rotate-360 duration-900 ease-in-out"
                     }`}
                     src="/vercel.svg"
                     alt="Logo"

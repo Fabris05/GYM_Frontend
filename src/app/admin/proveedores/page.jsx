@@ -12,9 +12,10 @@ import { Column } from "primereact/column";
 import CardProveedores from "@/components/proveedores/CardProveedores";
 import useProveedor from "@/hooks/useProveedor";
 import FormProveedores from "@/components/proveedores/FormProveedores";
+import FilterProveedores from "@/components/proveedores/FilterProveedores";
 
 export default function PageProveedores() {
-    const { loading, proveedores, fetchProveedores } = useProveedorStore();
+    const { loading, proveedores, fetchProveedores, findByCategoria } = useProveedorStore();
     const {
         handleModalClose,
         handleSubmit,
@@ -54,7 +55,7 @@ export default function PageProveedores() {
                         <CardProveedores proveedores={proveedores} />
                     </div>
                     <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        {/* Aquí va la barra de busqueda */}
+                        <FilterProveedores fetchProveedores={fetchProveedores} findByCategoria={findByCategoria} />
                     </div>
                     <section className="w-5/5 bg-white p-4 border border-gray-300  rounded-lg shadow-md justify-center items-center">
                         {loading ? (

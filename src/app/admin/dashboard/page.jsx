@@ -9,15 +9,31 @@ import { useDashboardStore } from "@/store/useDashboardStore";
 import GananciasSede from "@/components/dashboard/GananciasSede";
 import GananciasFecha from "@/components/dashboard/GananciasFecha";
 import SedesConcurridas from "@/components/dashboard/SedesConcurridas";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
     const { dashboardData, fetchDashboardData, loading } = useDashboardStore();
     const { pagos, fetchPagos } = usePagoStore();
+    const { userLogged } = useAuthStore();
+    const router = useRouter();
 
-    useEffect(() => {
+    const isLogedIn = !userLogged ? false : true;
+
+    const validateAccess = () => {
+        if (!userLogged) {
+            router.push("/");
+        }
+    };
+
+    const loadPage = () => {
         fetchDashboardData();
         fetchPagos();
-    }, [fetchDashboardData, fetchPagos]);
+    };
+
+    useEffect(() => {
+        isLogedIn ? loadPage() : validateAccess();
+    }, [fetchDashboardData, fetchPagos, userLogged]);
 
     return (
         <div className="flex h-screen overflow-hidden">

@@ -8,6 +8,7 @@ interface ProveedorState {
     fetchProveedores: () => Promise<void>;
     addProveedor: (proveedor: Omit<Proveedor, 'proveedorId'>) => Promise<void>;
     updateProveedor: (proveedorId: number, proveedor: Proveedor) => Promise<void>;
+    findByCategoria: (categoria: string) => void;
 }
 
 export const useProveedorStore = create<ProveedorState>((set, get) => ({
@@ -48,5 +49,9 @@ export const useProveedorStore = create<ProveedorState>((set, get) => ({
             console.error("Error al actualizar proveedor:", error);
             throw error;
         }
+    },
+    findByCategoria: (categoria: string) => {
+        const proveedoresFiltered = get().proveedores.filter((p) => p.categoria === categoria);
+        set({ proveedores: proveedoresFiltered });
     }
 }))
