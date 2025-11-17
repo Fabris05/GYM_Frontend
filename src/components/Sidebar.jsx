@@ -12,41 +12,52 @@ import {
     UserRound,
 } from "lucide-react";
 import { useSidebarStore } from "@/store/useSidebarStore";
+import { useAuthStore } from "@/store/useAuthStore";
+
 export default function Sidebar() {
     const { isOpen, toggle } = useSidebarStore();
+    const { userLogged } = useAuthStore();
 
     const Menus = [
         {
             title: "Dashboard",
             icon: <LayoutDashboard />,
+            roles: ["ADMIN"]
         },
         {
             title: "Clientes",
             icon: <UserRound />,
+            roles: ["ADMIN", "RECEPCIONISTA"]
         },
         {
             title: "Sedes",
             icon: <StoreIcon />,
+            roles: ["ADMIN"]
         },
         {
             title: "Inventario",
             icon: <Package />,
+            roles: ["ADMIN", "RECEPCIONISTA"]
         },
         {
             title: "Proveedores",
             icon: <Truck />,
+            roles: ["ADMIN"]
         },
         {
             title: "Empleados",
             icon: <ShieldUser />,
+            roles: ["ADMIN"]
         },
         {
             title: "Usuarios",
             icon: <UserCog />,
+            roles: ["ADMIN"]
         },
         {
             title: "Pagos",
             icon: <BadgeDollarSign />,
+            roles: ["ADMIN", "RECEPCIONISTA"]
         },
     ];
 
@@ -56,7 +67,7 @@ export default function Sidebar() {
                 isOpen ? "w-72 p-5 " : "w-20 p-4"
             } bg-zinc-900 h-screen pt-8 relative duration-300 ease-in-out`}
         >
-            {/* Toggle Button */}
+
             <div
                 className={`absolute cursor-pointer -right-4 top-9 w-8 h-8 p-0.5 bg-zinc-50 border-zinc-100 border-2 rounded-full text-xl flex items-center justify-center ${
                     !isOpen && "rotate-360"
@@ -66,8 +77,7 @@ export default function Sidebar() {
                 {isOpen ? <PanelLeftClose /> : <PanelRightClose />}
             </div>
 
-            {/* Logo */}
-            <div className="flex gap-x-4 items-center">
+            <div className="flex gap-x-4 items-center w-full">
                 <img
                     className={`w-6 h-6 object-contain object-center cursor-pointer ease-in-out duration-3 ${
                         !isOpen && "rotate-[360deg]"
@@ -84,16 +94,23 @@ export default function Sidebar() {
                 </h1>
             </div>
 
-            {/* Menu Items */}
             <div className=" flex flex-col pt-6 space-y-0.5 ">
-                {Menus.map((item, index) => (
+                {Menus
+                .filter( item => item.roles.includes(userLogged?.rol))
+                .map((item, index) => (
                     <Link
                         key={index}
                         href={`/admin/${item.title.toLowerCase()}`}
                         className={`flex gap-2 items-center rounded-md py-3 px-4 cursor-pointer hover:text-white text-zinc-50 hover:bg-zinc-600/50 transition-all ease-in-out duration-300`}
                     >
                         <span>{item.icon}</span>
-                        <span className={`font-sans duration-150 ease-in-out ${!isOpen && "scale-0"}`}>{item.title}</span>
+                        <span
+                            className={`font-sans duration-150 ease-in-out ${
+                                !isOpen && "scale-0"
+                            }`}
+                        >
+                            {item.title}
+                        </span>
                     </Link>
                 ))}
             </div>

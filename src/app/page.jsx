@@ -8,9 +8,17 @@ import ModalLogin from "@/components/auth/ModalLogin";
 import { PlanesSection } from "@/components/web/PlanesSection";
 import { LocationsSection } from "@/components/web/LocationSection";
 import { ServiciosSection } from "@/components/web/ServiciosSection";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Home() {
-    const { visible, handleOpenLogin, handleCloseLogin } = useLogin();
+    const {
+        visible,
+        handleOpenLogin,
+        handleCloseLogin,
+        userLogin,
+        error,
+        loading,
+    } = useLogin();    
 
     return (
         <main className="min-h-screen">
@@ -96,7 +104,13 @@ export default function Home() {
                 <ServiciosSection />
             </section>
             <Footer />
-            <ModalLogin visible={visible} handleCloseLogin={handleCloseLogin} />
+            <ModalLogin
+                visible={visible}
+                handleCloseLogin={handleCloseLogin}
+                userLogin={userLogin}
+                error={error}
+                loading={loading}
+            />
         </main>
     );
 }
