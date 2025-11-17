@@ -1,6 +1,5 @@
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/store/useAuthStore";
-import { setRolCookie } from "@/app/actions/auth";
 import { confirmLogin } from "@/utils/alerts";
 
 export default function useLogin() {
@@ -17,9 +16,6 @@ export default function useLogin() {
 
     const userLogin = async (nombreUsuario, password) => {
         await login({ nombreUsuario, password });
-        if (userLogged) {
-            await setRolCookie(userLogged.rol);
-        }
     };
     return {
         visible,

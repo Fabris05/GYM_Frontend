@@ -4,7 +4,6 @@ import { Button } from "primereact/button";
 import React, { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import { setRolCookie } from "@/app/actions/auth";
 import { confirmLogin } from "@/utils/alerts";
 
 export default function ModalLogin({
@@ -21,7 +20,6 @@ export default function ModalLogin({
 
     const redirectIfLogged = async () => {
         if (userLogged) {
-            await setRolCookie(userLogged.rol);
             handleCloseLogin();
             confirmLogin();
             userLogged.rol === "ADMIN"

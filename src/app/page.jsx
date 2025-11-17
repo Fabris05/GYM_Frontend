@@ -8,7 +8,6 @@ import ModalLogin from "@/components/auth/ModalLogin";
 import { PlanesSection } from "@/components/web/PlanesSection";
 import { LocationsSection } from "@/components/web/LocationSection";
 import { ServiciosSection } from "@/components/web/ServiciosSection";
-import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Home() {
     const {
