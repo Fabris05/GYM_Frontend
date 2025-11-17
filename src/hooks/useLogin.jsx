@@ -21,7 +21,6 @@ export default function useLogin() {
             await setRolCookie(userLogged.rol);
         }
     };
-
     return {
         visible,
         handleOpenLogin,
