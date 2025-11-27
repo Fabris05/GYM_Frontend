@@ -11,7 +11,7 @@ export default function SedesConcurridas({ data }) {
         <div style={{ height: 350 }}>
             <ResponsivePie
                 data={chartData}
-                margin={{ top: 30, right: 100, bottom: 60, left: 100 }}
+                margin={{ top: 30, right: 120, bottom: 60, left: 100 }}
                 innerRadius={0.5}
                 padAngle={1.5}
                 cornerRadius={4}
@@ -52,7 +52,7 @@ export default function SedesConcurridas({ data }) {
                         translateX: 80,
                         translateY: 0,
                         itemsSpacing: 10,
-                        itemWidth: 100,
+                        itemWidth: 90,
                         itemHeight: 20,
                         itemDirection: "left-to-right",
                         itemOpacity: 0.85,

@@ -39,7 +39,7 @@ export default function ClientPage() {
     const handleEliminar = (clienteId) => {
         deleteCliente(clienteId);
         successAlert(
-            "Cliente eliminado",
+            "Cliente deshabilitado correctamente",
             "Lo podrás habilitar desde el botón correspondiente"
         );
     };

@@ -39,6 +39,7 @@ export const useEmpleadoStore = create<EmpleadoState>((set, get) => ({
     updateEmpleado: async (empleadoId, empleado) => {
         try{
             const updatedEmpleado = await empleadoService.updateEmpleado(empleadoId, empleado);
+            console.log("Empleado actualizado:", updatedEmpleado);
             set({
                 empleados: get().empleados.map((e) =>
                     e.empleadoId === empleadoId ? updatedEmpleado : e)

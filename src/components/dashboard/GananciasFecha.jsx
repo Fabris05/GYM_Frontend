@@ -20,7 +20,7 @@ export default function GananciasFecha({ pagos }) {
         <div className="flex flex-col">
             <div className="flex justify-between">
                 <span className="font-sans font-bold text-lg">
-                    Pagos por mes
+                    Ganancias por mes
                 </span>
                 <select
                     className="p-2 border rounded-md justify-end self-end"

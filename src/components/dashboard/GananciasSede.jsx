@@ -14,7 +14,7 @@ export default function GananciasSede({ data }) {
                 indexBy="sede"
                 colorBy="indexValue"
                 colors={{ scheme: "set2" }}
-                margin={{ top: 30, right: 100, bottom: 60, left: 70 }}
+                margin={{ top: 30, right: 130, bottom: 60, left: 70 }}
                 padding={0.3}
                 label={(d) => `S/ ${d.value}`}
                 labelSkipWidth={12}
@@ -52,7 +52,7 @@ export default function GananciasSede({ data }) {
                         translateX: 80,
                         translateY: 0,
                         itemsSpacing: 10,
-                        itemWidth: 100,
+                        itemWidth: 60,
                         itemHeight: 20,
                         itemDirection: "left-to-right",
                         itemOpacity: 0.85,

@@ -1,0 +1,47 @@
+export const planes = [
+    {
+        name: "Básico",
+        price: "70",
+        description: "Perfecto para comenzar tu vida fitness",
+        featured: false,
+        features: [
+            { text: "Acceso una sede", included: true },
+            { text: "Horario: 6am - 10pm", included: true },
+            { text: "Área de pesas y cardio", included: true },
+            { text: "Vestuarios y duchas", included: true },
+            { text: "Clases grupales de baile", included: false },
+            { text: "Entrenador personal", included: false },
+            { text: "Sorteo de accesorios", included: false },
+        ],
+    },
+    {
+        name: "Premium",
+        price: "100",
+        description: "La opción más popular para resultados serios",
+        featured: true,
+        features: [
+            { text: "Acceso a 2 sedes a elección", included: true },
+            { text: "Horario: 6am - 10pm", included: true },
+            { text: "Área de pesas y cardio", included: true },
+            { text: "Vestuarios y duchas", included: true },
+            { text: "Clases grupales de baile", included: true },
+            { text: "4 sesiones con entrenador", included: true },
+            { text: "Sorteo de accesorios", included: false },
+        ],
+    },
+    {
+        name: "Elite",
+        price: "150",
+        description: "Experiencia completa de transformación",
+        featured: false,
+        features: [
+            { text: "Acceso a todas las sedes", included: true },
+            { text: "Horario: 6am - 10pm", included: true },
+            { text: "Área de pesas y cardio", included: true },
+            { text: "Vestuarios premium", included: true },
+            { text: "Clases grupales ilimitadas", included: true },
+            { text: "Entrenador personal ilimitado", included: true },
+            { text: "Sorteo de accesorios", included: true },
+        ],
+    },
+];

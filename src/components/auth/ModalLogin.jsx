@@ -1,7 +1,7 @@
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { confirmLogin } from "@/utils/alerts";
@@ -18,26 +18,25 @@ export default function ModalLogin({
     const { userLogged } = useAuthStore();
     const router = useRouter();
 
-    const redirectIfLogged = async () => {
-        if (userLogged) {
-            handleCloseLogin();
-            confirmLogin();
-            userLogged.rol === "ADMIN"
-                ? router.push("/admin/dashboard")
-                : router.push("/admin/clientes");
-        }
-    };
-
     const closeLoginModal = () => {
         setEmail("");
         setPassword("");
         handleCloseLogin();
     };
 
-    const handleLogin = () => {
-        userLogin(email, password);
-        redirectIfLogged();
+    const handleLogin = async () => {
+        await userLogin(email, password);
     };
+
+    useEffect(() => {
+        if (userLogged && visible) {
+            handleCloseLogin();
+            confirmLogin();
+            userLogged.rol === "ADMIN"
+                ? router.push("/admin/dashboard")
+                : router.push("/admin/clientes");
+        }
+    }, [userLogged, visible, router, handleCloseLogin]);
 
     return (
         <Dialog
