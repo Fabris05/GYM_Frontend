@@ -82,6 +82,7 @@ export default function Navbar({ handleOpenLogin }) {
 
                         <Button
                             className="p-button-outlined"
+                            label="INICIAR SESIÓN"
                             style={{
                                 backgroundColor: "#eab308",
                                 color: "#000",
@@ -100,11 +101,9 @@ export default function Navbar({ handleOpenLogin }) {
                             }}
                             onClick={handleOpenLogin}
                         >
-                            INICIAR SESIÓN
                         </Button>
                     </div>
 
-                    {/* MOBILE TOGGLE */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="md:hidden text-white hover:text-yellow-500 transition-colors p-2"
@@ -118,7 +117,6 @@ export default function Navbar({ handleOpenLogin }) {
                 </div>
             </div>
 
-            {/* MOBILE MENU (Con AnimatePresence para animación de salida) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div

@@ -37,7 +37,7 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/30" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center py-40 md:py-24">
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -53,7 +53,7 @@ export default function HeroSection() {
 
                     <motion.h1
                         variants={itemVariants}
-                        className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none mb-6"
+                        className="text-7xl md:text-5xl lg:text-7xl font-black text-white tracking-tight leading-none mb-6"
                     >
                         TRANSFORMA <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
@@ -76,7 +76,7 @@ export default function HeroSection() {
                     >
                         <Link
                             href="#planes"
-                            className="group relative px-8 py-4 bg-yellow-500 text-black font-bold text-lg rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
+                            className="group relative px-8 py-3 bg-yellow-500 text-black font-bold text-lg rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
                         >
                             <span className="relative z-10">Ver Planes</span>
                             <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-100 group-hover:bg-yellow-400/50" />
@@ -84,7 +84,7 @@ export default function HeroSection() {
 
                         <Link
                             href="#contacto"
-                            className="px-8 py-4 bg-transparent border border-white/30 text-white font-semibold text-lg rounded-full hover:bg-white/10 backdrop-blur-sm transition-all hover:border-white"
+                            className="px-8 py-3 bg-transparent border border-white/30 text-white font-semibold text-lg rounded-full hover:bg-white/10 backdrop-blur-sm transition-all hover:border-white"
                         >
                             Clase de Prueba
                         </Link>
@@ -95,11 +95,11 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1, duration: 0.8 }}
-                    className="mt-16 md:mt-24 w-full grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 border-t border-white/10 pt-8"
+                    className="mt-16 md:mt-10 w-full grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 border-t border-white/10 pt-8"
                 >
                     <div className="flex flex-col items-center">
                         <Users className="w-6 h-6 text-yellow-500 mb-2" />
-                        <span className="text-3xl font-bold text-white">
+                        <span className="text-2xl font-bold text-white">
                             5K+
                         </span>
                         <span className="text-sm text-gray-400 uppercase tracking-widest">
@@ -108,7 +108,7 @@ export default function HeroSection() {
                     </div>
                     <div className="flex flex-col items-center border-l-0 md:border-l border-white/10">
                         <Trophy className="w-6 h-6 text-yellow-500 mb-2" />
-                        <span className="text-3xl font-bold text-white">
+                        <span className="text-2xl font-bold text-white">
                             98%
                         </span>
                         <span className="text-sm text-gray-400 uppercase tracking-widest">
@@ -117,7 +117,7 @@ export default function HeroSection() {
                     </div>
                     <div className="flex flex-col items-center border-l-0 md:border-l border-white/10">
                         <Zap className="w-6 h-6 text-yellow-500 mb-2" />
-                        <span className="text-3xl font-bold text-white">5</span>
+                        <span className="text-2xl font-bold text-white">5</span>
                         <span className="text-sm text-gray-400 uppercase tracking-widest">
                             Sedes
                         </span>

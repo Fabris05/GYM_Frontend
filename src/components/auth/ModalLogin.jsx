@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { confirmLogin } from "@/utils/alerts";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 export default function ModalLogin({
     visible,
@@ -43,10 +44,6 @@ export default function ModalLogin({
             visible={visible}
             style={{
                 width: "30rem",
-                borderRadius: "10px",
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 1)",
-                color: "#fff",
                 padding: "1rem",
             }}
             modal
@@ -67,11 +64,6 @@ export default function ModalLogin({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="p-inputtext w-full text-gray-900"
-                    style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.79)",
-                        border: "1px solid rgba(255, 255, 255, 1)",
-                        borderRadius: "6px",
-                    }}
                 />
                 <label
                     htmlFor="username"
@@ -85,22 +77,28 @@ export default function ModalLogin({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="p-inputtext w-full text-gray-900"
-                    style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.79)",
-                        border: "1px solid rgba(255, 255, 255, 1)",
-                        borderRadius: "6px",
-                    }}
                 />
-                <div>
+                <div className="flex justify-center mt-4">
                     {error && (
-                        <span className="text-red-600 font-semibold text-center">
+                        <span className="text-red-600 font-semibold">
                             {error}
                         </span>
                     )}
                 </div>
                 <div className="flex gap-4 justify-center mt-4">
                     <Button
-                        label={loading ? "Cargando..." : "Iniciar Sesión"}
+                        label={
+                            loading ? (
+                                <ProgressSpinner
+                                    style={{ width: "25px", height: "25px" }}
+                                    strokeWidth="8"
+                                    fill="transparent"
+                                    animationDuration="2s"
+                                />
+                            ) : (
+                                "Iniciar Sesión"
+                            )
+                        }
                         className="p-button "
                         style={{
                             backgroundColor: "rgba(245, 149, 15, 0.89)",
