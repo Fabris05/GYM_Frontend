@@ -49,3 +49,22 @@ export const confirmLogin = () => {
         timer: 3000
     })
 }
+
+export const deleteItem = (deletedProveedor: Function, proveedorId: number, elemento: String) => {
+    Swal.fire({
+        title: `¿Seguro que deseas eliminar este ${elemento}?`,
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#82ae37ff",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deletedProveedor(proveedorId);
+            Swal.fire("Eliminado", `El ${elemento} ha sido eliminado con éxito.`, "success");
+        }
+    });
+}

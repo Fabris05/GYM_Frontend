@@ -1,7 +1,6 @@
 import useModal from "./useModal";
-import { successAlert, errorAlert } from "@/utils/alerts";
+import { successAlert, errorAlert, deleteItem } from "@/utils/alerts";
 import { useProveedorStore } from "@/store/useProveedorStore";
-import { Pencil } from "lucide-react";
 import { Button } from "primereact/button";
 import { initialProveedorForm } from "@/constants/initialForms";
 import { useState } from "react";
@@ -10,7 +9,8 @@ export default function useProveedor() {
     const [selectedProveedor, setSelectedProveedor] =
         useState(initialProveedorForm);
     const [mode, setMode] = useState("crear");
-    const { addProveedor, updateProveedor } = useProveedorStore();
+    const { addProveedor, updateProveedor, deleteProveedor } =
+        useProveedorStore();
     const { open, close, visible } = useModal();
 
     // Función para abrir el modal
@@ -34,6 +34,15 @@ export default function useProveedor() {
         setMode("editar");
         setSelectedProveedor(proveedor);
         handleModalOpen();
+    };
+
+    // Funcion para manejar la eliminación de un proveedor
+    const handleEliminar = (proveedor) => {
+        try{
+            deleteItem(deletedProveedor, proveedor.proveedorId, "proveedor");
+        }catch(error){
+            console.log(error);
+        }
     };
 
     // Función para mostrar el mensaje de éxito
@@ -61,6 +70,10 @@ export default function useProveedor() {
         await updateProveedor(proveedorId, form);
     };
 
+    const deletedProveedor = async (proveedorId) => {
+        await deleteProveedor(proveedorId);
+    };
+
     // Función para manejar el envío del formulario
     const handleSubmit = async (form, selectedCategoria) => {
         try {
@@ -82,12 +95,20 @@ export default function useProveedor() {
         return (
             <div className="flex gap-2 justify-center">
                 <Button
-                    icon={<Pencil size={20} />}
+                    icon="pi pi-pencil"
                     rounded
                     text
                     severity="success"
                     aria-label="Search"
                     onClick={() => handleEditar(rowData)}
+                />
+                <Button
+                    icon="pi pi-trash"
+                    rounded
+                    text
+                    severity="danger"
+                    aria-label="delete"
+                    onClick={() => handleEliminar(rowData)}
                 />
             </div>
         );

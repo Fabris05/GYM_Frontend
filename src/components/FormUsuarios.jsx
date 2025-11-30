@@ -58,8 +58,8 @@ export default function FormUsuarios({
         } catch (error) {
             console.error("Error al registrar:", error);
             errorAlert(
-                "Error al agregar usuario",
-                "Ha ocurrido un error al registrar el nuevo usuario."
+                "Error al agregar al empleado",
+                "Ha ocurrido un error al registrar el nuevo empleado."
             );
         }
     };

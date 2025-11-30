@@ -9,6 +9,7 @@ interface ProveedorState {
     addProveedor: (proveedor: Omit<Proveedor, 'proveedorId'>) => Promise<void>;
     updateProveedor: (proveedorId: number, proveedor: Proveedor) => Promise<void>;
     findByCategoria: (categoria: string) => void;
+    deleteProveedor: (proveedorId: number) => Promise<void>;
 }
 
 export const useProveedorStore = create<ProveedorState>((set, get) => ({
@@ -53,5 +54,16 @@ export const useProveedorStore = create<ProveedorState>((set, get) => ({
     findByCategoria: (categoria: string) => {
         const proveedoresFiltered = get().proveedores.filter((p) => p.categoria === categoria);
         set({ proveedores: proveedoresFiltered });
+    },
+    deleteProveedor: async (proveedorId: number) => {
+        try {
+            await proveedorService.deleteProveedor(proveedorId);
+            set({
+                proveedores: get().proveedores.filter((p) => p.proveedorId !== proveedorId),
+            });
+        } catch (error) {
+            console.error("Error al eliminar proveedor:", error);
+            throw error;
+        }
     }
 }))

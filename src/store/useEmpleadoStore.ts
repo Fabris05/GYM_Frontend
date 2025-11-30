@@ -10,6 +10,7 @@ interface EmpleadoState {
     updateEmpleado: (empleadoId: number, empleado: Empleado) => Promise<void>;
     findByRole: (cargo: string) => Promise<void>;
     findByDNI: (dni: string) => Promise<void>;
+    deleteEmpleado: (empleadoId: number) => Promise<void>;
 }
 
 export const useEmpleadoStore = create<EmpleadoState>((set, get) => ({
@@ -37,39 +38,48 @@ export const useEmpleadoStore = create<EmpleadoState>((set, get) => ({
         }
     },
     updateEmpleado: async (empleadoId, empleado) => {
-        try{
+        try {
             const updatedEmpleado = await empleadoService.updateEmpleado(empleadoId, empleado);
             console.log("Empleado actualizado:", updatedEmpleado);
             set({
                 empleados: get().empleados.map((e) =>
                     e.empleadoId === empleadoId ? updatedEmpleado : e)
             });
-        }catch(error){
+        } catch (error) {
             console.error("Error al actualizar empleado:", error);
         }
     },
     findByRole: async (cargo) => {
-        try{
+        try {
             set({ loading: true });
             const data = await empleadoService.findByRole(cargo);
-            set( {empleados: data} );
-        }catch(error){
+            set({ empleados: data });
+        } catch (error) {
             console.error("Error al buscar empleados por cargo:", error);
             throw error;
-        }finally{
+        } finally {
             set({ loading: false });
         }
     },
-    findByDNI: async(dni: string) => {
-        try{
-            set({loading: true});
-            const data = await empleadoService.findByDNI(dni);  
-            set({empleados: [data]});
-        }catch(error){
+    findByDNI: async (dni: string) => {
+        try {
+            set({ loading: true });
+            const data = await empleadoService.findByDNI(dni);
+            set({ empleados: [data] });
+        } catch (error) {
             console.error("Error al buscar empleado por DNI:", error);
             throw error;
-        }finally{
-            set({loading: false});
+        } finally {
+            set({ loading: false });
+        }
+    },
+    deleteEmpleado: async (empleadoId: number) => {
+        try {
+            await empleadoService.deleteEmpleado(empleadoId);
+            set({ empleados: get().empleados.filter((e) => e.empleadoId !== empleadoId) });
+        } catch (error) {
+            console.error("Error al eliminar el empleado:", error);
+            throw error;
         }
     }
 }))

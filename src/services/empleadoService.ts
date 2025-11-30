@@ -38,3 +38,7 @@ export async function findByDNI(dni: string): Promise<Empleado>{
     const res = await axios.get(`http://localhost:${PORT}/api/empleados/dni/${dni}`);
     return res.data;
 }
+
+export async function deleteEmpleado(empleadoId: number): Promise<void>{
+    await axios.delete(`http://localhost:${PORT}/api/empleados/${empleadoId}`);
+}

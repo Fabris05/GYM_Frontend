@@ -9,17 +9,15 @@ import { Pencil, UserPlus } from "lucide-react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useEffect, useState } from "react";
-import ButtonsEmpleados from "@/components/ButtonsEmpleados";
 import CardEmpleados from "@/components/CardEmpleados";
-import { Dropdown } from "primereact/dropdown";
 import { initialUserForm } from "@/constants/initialForms";
 import FilterEmpleados from "@/components/empleados/FilterEmpleados";
+import { deleteItem, errorAlert } from "@/utils/alerts";
 
 export default function page() {
-    const { empleados, loading, fetchEmpleados, findByRole } =
+    const { empleados, loading, fetchEmpleados, findByRole, deleteEmpleado } =
         useEmpleadoStore();
     const { visible, open, close } = useModal();
     const [selectedEmpleado, setSelectedEmpleado] = useState(initialUserForm);
@@ -50,6 +48,21 @@ export default function page() {
         open();
     };
 
+    const deletedEmpleado = async (empleadoId) => {
+        await deleteEmpleado(empleadoId);
+    };
+
+    const handleEliminar = (empleado) => {
+        try {
+            deleteItem(deletedEmpleado, empleado.empleadoId, "empleado");
+        } catch (error) {
+            errorAlert(
+                "Error al eliminar el empleado",
+                "Hubo un problema al eliminar el empleado"
+            );
+        }
+    };
+
     useEffect(() => {
         fetchEmpleados();
     }, [fetchEmpleados]);
@@ -64,6 +77,15 @@ export default function page() {
                     severity="success"
                     aria-label="Search"
                     onClick={() => handleEditar(rowData)}
+                />
+
+                <Button
+                    icon="pi pi-trash"
+                    rounded
+                    text
+                    severity="danger"
+                    aria-label="delete"
+                    onClick={() => handleEliminar(rowData)}
                 />
             </div>
         );
@@ -114,7 +136,10 @@ export default function page() {
                                     field="telefono"
                                     header="Telefono"
                                 ></Column>
-                                <Column field="sede.nombre" header="Sede"></Column>
+                                <Column
+                                    field="sede.nombre"
+                                    header="Sede"
+                                ></Column>
                                 <Column field="cargo" header="Cargo"></Column>
                                 <Column body={actionBodyTemplate} />
                             </DataTable>
