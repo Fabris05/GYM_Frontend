@@ -22,3 +22,7 @@ export async function updateUsuario(usuarioId: number, usuario: Usuario): Promis
     const res = await axios.put(`http://localhost:${PORT}/api/usuarios/${usuarioId}`, usuario);
     return res.data;
 }
+
+export async function deleteUsuario(usuarioId: number): Promise<void>{
+    await axios.delete(`http://localhost:${PORT}/api/usuarios/${usuarioId}`);
+}

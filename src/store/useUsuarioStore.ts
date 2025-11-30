@@ -10,6 +10,7 @@ interface UsuarioState {
     updateUsuario: (usuarioId: number, usuario: Usuario) => Promise<void>;
     findUsuariosByRol: (rol: string) => void;
     findByNombreUsuario: (nombreUsuariio: string) => void;
+    deleteUsuario: (usuarioId: number) => Promise<void>;
 }
 
 export const useUsuarioStore = create<UsuarioState>((set, get) => ({
@@ -50,7 +51,17 @@ export const useUsuarioStore = create<UsuarioState>((set, get) => ({
         set({ usuarios: usuariosFiltrados });
     },
     findByNombreUsuario: (nombreUsuariio: string) => {
-        const usuarioFiltrado = get().usuarios.find( (u) => u.nombreUsuario === nombreUsuariio)
+        const usuarioFiltrado = get().usuarios.find((u) => u.nombreUsuario === nombreUsuariio)
         set({ usuarios: usuarioFiltrado ? [usuarioFiltrado] : [] });
+    },
+    deleteUsuario: async (usuarioId: number) => {
+        try {
+            await usuarioService.deleteUsuario(usuarioId);
+            set({
+                usuarios: get().usuarios.filter((u) => u.usuarioId !== usuarioId)
+            });
+        } catch (error) {
+            console.error("Error deleting usuario:", error);
+        }
     }
 }))

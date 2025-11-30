@@ -4,12 +4,13 @@ import { Button } from "primereact/button";
 import { Pencil } from "lucide-react";
 import { initialUsuarioForm } from "@/constants/initialForms";
 import { useUsuarioStore } from "@/store/useUsuarioStore";
-import { successAlert, errorAlert } from "@/utils/alerts";
+import { successAlert, errorAlert, deleteItem } from "@/utils/alerts";
+
 export default function useUsuario() {
     const { open, close, visible } = useModal();
     const [mode, setMode] = useState("crear");
     const [selectedUsuario, setSelectedUsuario] = useState(initialUsuarioForm);
-    const { addUsuario, updateUsuario } = useUsuarioStore();
+    const { addUsuario, updateUsuario, deleteUsuario } = useUsuarioStore();
 
     const handleModalOpen = () => {
         open();
@@ -23,7 +24,7 @@ export default function useUsuario() {
             rol: "",
         });
         close();
-        console.log(selectedUsuario)
+        console.log(selectedUsuario);
     };
 
     const handleCrear = () => {
@@ -38,6 +39,17 @@ export default function useUsuario() {
         handleModalOpen();
     };
 
+    const handleEliminar = async (usuario) => {
+        try {
+            deleteItem(deletedUsuario, usuario.usuarioId, "usuario");
+        } catch (error) {
+            errorMessage(
+                "Error al eliminar usuario",
+                "Hubo un error al eliminar el usuario."
+            );
+        }
+    };
+
     const createUsuario = async (usuario) => {
         await addUsuario(usuario);
         handleModalClose();
@@ -49,6 +61,10 @@ export default function useUsuario() {
         await updateUsuario(usuario.usuarioId, usuario);
         handleModalClose();
         successMessage();
+    };
+
+    const deletedUsuario = async (usuarioId) => {
+        await deleteUsuario(usuarioId);
     };
 
     const successMessage = () => {
@@ -84,6 +100,14 @@ export default function useUsuario() {
                     severity="success"
                     aria-label="Search"
                     onClick={() => handleEditar(rowData)}
+                />
+                <Button
+                    icon="pi pi-trash"
+                    rounded
+                    text
+                    severity="danger"
+                    aria-label="delete"
+                    onClick={() => handleEliminar(rowData)}
                 />
             </div>
         );
