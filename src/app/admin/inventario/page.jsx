@@ -12,9 +12,12 @@ import Card from "@/components/maquinas/Card";
 import { ProgressSpinner } from "primereact/progressspinner";
 import ViewMaquina from "@/components/maquinas/ViewMaquina";
 import SearchMaquina from "@/components/maquinas/SearchMaquina";
+import ExportButtons from "@/components/ExportButtons";
+import useExport from "@/hooks/useExport";
 
 export default function page() {
     const { maquinas, fetchMaquinas, loading } = useMaquinaStore();
+    const { exportCSV, exportExcel, exportPDF } = useExport();
     const {
         mode,
         visible,
@@ -57,8 +60,22 @@ export default function page() {
                     <div className="grid grid-cols-4 gap-6 mb-4">
                         <CardInfo maquinas={maquinas} />
                     </div>
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        <SearchMaquina handleFindByEstado={handleFindByEstado} fetchMaquinas={fetchMaquinas} />
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                        <div>
+                            <ExportButtons
+                                data={maquinas}
+                                exportCSV={exportCSV}
+                                exportExcel={exportExcel}
+                                exportPDF={exportPDF}
+                            />
+                        </div>
+
+                        <div className="flex items-center">
+                            <SearchMaquina
+                                handleFindByEstado={handleFindByEstado}
+                                fetchMaquinas={fetchMaquinas}
+                            />
+                        </div>
                     </div>
                     <section className="bg-white p-4 rounded-md shadow-md border border-gray-300">
                         {loading ? (

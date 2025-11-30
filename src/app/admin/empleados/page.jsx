@@ -15,10 +15,13 @@ import CardEmpleados from "@/components/CardEmpleados";
 import { initialUserForm } from "@/constants/initialForms";
 import FilterEmpleados from "@/components/empleados/FilterEmpleados";
 import { deleteItem, errorAlert } from "@/utils/alerts";
+import ExportButtons from "@/components/ExportButtons";
+import useExport from "@/hooks/useExport";
 
 export default function page() {
     const { empleados, loading, fetchEmpleados, findByRole, deleteEmpleado } =
         useEmpleadoStore();
+    const { exportCSV, exportExcel, exportPDF } = useExport();
     const { visible, open, close } = useModal();
     const [selectedEmpleado, setSelectedEmpleado] = useState(initialUserForm);
     const [selectedCargo, setSelectedCargo] = useState("");
@@ -115,8 +118,19 @@ export default function page() {
                     <section className="grid grid-cols-3 gap-6 mb-4">
                         <CardEmpleados usuarios={empleados} />
                     </section>
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        <FilterEmpleados fetchEmpleados={fetchEmpleados} />
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                        <div className="">
+                            <ExportButtons
+                                data={empleados}
+                                exportCSV={exportCSV}
+                                exportExcel={exportExcel}
+                                exportPDF={exportPDF}
+                            />
+                        </div>
+
+                        <div className="flex items-center">
+                            <FilterEmpleados fetchEmpleados={fetchEmpleados} />
+                        </div>
                     </div>
                     {loading ? (
                         <ProgressSpinner />

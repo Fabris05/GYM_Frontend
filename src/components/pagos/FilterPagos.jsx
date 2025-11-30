@@ -7,12 +7,11 @@ import { useClienteStore } from "@/store/useClienteStore";
 import { usePagoStore } from "@/store/usePagoStore";
 import { ListRestart } from "lucide-react";
 
-export default function FilterPagos({ fetchPagos }) {
-    const { findByDNI } = useClienteStore();
+export default function FilterPagos({ fetchPagos, refresh, setRefresh }) {
     const { findPagosByClientId, findPagosByEstado } = usePagoStore();
-    const [refresh, setRefresh] = useState(false);
-    const [dni, setDni] = useState("");
     const [estado, setEstado] = useState(null);
+    const { findByDNI } = useClienteStore();
+    const [dni, setDni] = useState("");
 
     const findPagosById = async () => {
         const cliente = await findByDNI(dni);

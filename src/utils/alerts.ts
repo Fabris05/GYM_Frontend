@@ -68,3 +68,13 @@ export const deleteItem = (deletedProveedor: Function, proveedorId: number, elem
         }
     });
 }
+
+export const errorExport = () => {
+    Swal.fire({
+        title: "Error al exportar",
+        text: "Por favor, verifica tus filtros e intenta nuevamente.",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2500
+    });
+}

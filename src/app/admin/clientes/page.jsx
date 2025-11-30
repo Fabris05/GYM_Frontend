@@ -15,11 +15,14 @@ import CardClientes from "@/components/CardClientes";
 import { initialClienteForm } from "@/constants/initialForms";
 import TagRow from "@/components/TagRow";
 import { successAlert } from "@/utils/alerts";
+import useExport from "@/hooks/useExport";
+import ExportButtons from "@/components/ExportButtons";
 
 export default function ClientPage() {
     const { clientes, loading, fetchClientes, deleteCliente, enableCliente } =
         useClienteStore();
-    const { visible, open, close } = useModal();
+    const { exportCSV, exportExcel, exportPDF } = useExport();
+     const { visible, open, close } = useModal();
     const [estado, setEstado] = useState("crear");
     const [clienteSeleccionado, setClienteSeleccionado] =
         useState(initialClienteForm);
@@ -115,7 +118,13 @@ export default function ClientPage() {
                         <CardClientes clientes={clientes} />
                     </div>
 
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                        <ExportButtons
+                            data={clientes}
+                            exportCSV={exportCSV}
+                            exportExcel={exportExcel}
+                            exportPDF={exportPDF}
+                        />
                         <SearchCliente fetchClientes={fetchClientes} />
                     </div>
 

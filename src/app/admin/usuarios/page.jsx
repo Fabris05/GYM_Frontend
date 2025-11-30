@@ -13,9 +13,12 @@ import useUsuario from "@/hooks/useUsuario";
 import FormUsuario from "@/components/usuarios/FormUsuario";
 import { Button } from "primereact/button";
 import { UserPlus } from "lucide-react";
+import ExportButtons from "@/components/ExportButtons";
+import useExport from "@/hooks/useExport";
 
 export default function UsuariosPage() {
     const { loading, usuarios, fetchUsuarios } = useUsuarioStore();
+    const { exportCSV, exportExcel, exportPDF } = useExport();
     const {
         visible,
         selectedUsuario,
@@ -54,7 +57,16 @@ export default function UsuariosPage() {
                     <section className="grid grid-cols-3 gap-6 mb-4">
                         <CardUsuarios usuarios={usuarios} />
                     </section>
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                        <div className="">
+                            <ExportButtons
+                                data={usuarios}
+                                exportCSV={exportCSV}
+                                exportExcel={exportExcel}
+                                exportPDF={exportPDF}
+                            />
+                        </div>
+
                         <div className="flex items-center">
                             <FilterUsuarios fetchUsuarios={fetchUsuarios} />
                         </div>

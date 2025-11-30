@@ -13,9 +13,13 @@ import CardProveedores from "@/components/proveedores/CardProveedores";
 import useProveedor from "@/hooks/useProveedor";
 import FormProveedores from "@/components/proveedores/FormProveedores";
 import FilterProveedores from "@/components/proveedores/FilterProveedores";
+import ExportButtons from "@/components/ExportButtons";
+import useExport from "@/hooks/useExport";
 
 export default function PageProveedores() {
-    const { loading, proveedores, fetchProveedores, findByCategoria } = useProveedorStore();
+    const { loading, proveedores, fetchProveedores, findByCategoria } =
+        useProveedorStore();
+    const { exportCSV, exportExcel, exportPDF } = useExport();
     const {
         handleModalClose,
         handleSubmit,
@@ -54,8 +58,22 @@ export default function PageProveedores() {
                     <div className="grid grid-cols-3 gap-6 mb-4">
                         <CardProveedores proveedores={proveedores} />
                     </div>
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
-                        <FilterProveedores fetchProveedores={fetchProveedores} findByCategoria={findByCategoria} />
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                        <div>
+                            <ExportButtons
+                                data={proveedores}
+                                exportCSV={exportCSV}
+                                exportExcel={exportExcel}
+                                exportPDF={exportPDF}
+                            />
+                        </div>
+
+                        <div className="flex items-center">
+                            <FilterProveedores
+                                fetchProveedores={fetchProveedores}
+                                findByCategoria={findByCategoria}
+                            />
+                        </div>
                     </div>
                     <section className="w-5/5 bg-white p-4 border border-gray-300  rounded-lg shadow-md justify-center items-center">
                         {loading ? (
@@ -73,8 +91,13 @@ export default function PageProveedores() {
                                 <Column field="nombre" header="Nombre" />
                                 <Column field="categoria" header="Categoría" />
                                 <Column
-                                    body={(rowData) => actionBodyTemplate(rowData)}
-                                    style={{ textAlign: "center", width: "8rem" }}
+                                    body={(rowData) =>
+                                        actionBodyTemplate(rowData)
+                                    }
+                                    style={{
+                                        textAlign: "center",
+                                        width: "8rem",
+                                    }}
                                 />
                             </DataTable>
                         )}

@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { BanknoteArrowUp } from "lucide-react";
 import CardPagos from "@/components/pagos/CardPagos";
 import { usePagoStore } from "@/store/usePagoStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ProgressSpinner } from "primereact/progressspinner";
@@ -13,9 +13,15 @@ import EstadoSpan from "@/components/pagos/EstadoSpan";
 import FormPagos from "@/components/pagos/FormPagos";
 import usePago from "@/hooks/usePago";
 import FilterPagos from "@/components/pagos/FilterPagos";
+import ExportButtons from "@/components/ExportButtons";
+import useExport from "@/hooks/useExport";
+import { useClienteStore } from "@/store/useClienteStore";
 
 export default function PagosPage() {
     const { pagos, fetchPagos, loading } = usePagoStore();
+    const { clientes } = useClienteStore();
+    const [refresh, setRefresh] = useState(false);
+    const { exportCSV, exportExcel, exportPDF } = useExport();
     const {
         visible,
         mode,
@@ -55,15 +61,32 @@ export default function PagosPage() {
                     <section className="grid grid-cols-3 gap-6 mb-4">
                         <CardPagos pagos={pagos} />
                     </section>
-                    <div className="flex justify-end items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
+                    <div className="flex justify-between items-center mb-4 gap-4 border border-gray-300 rounded-lg shadow-md p-3 bg-white">
                         <div className="flex items-center">
-                            <FilterPagos fetchPagos={fetchPagos}/>
+                            <ExportButtons
+                                data={pagos}
+                                exportCSV={exportCSV}
+                                exportExcel={exportExcel}
+                                exportPDF={exportPDF}
+                            />
+                        </div>
+                        <div className="">
+                            <FilterPagos fetchPagos={fetchPagos} refresh={refresh} setRefresh={setRefresh} />
                         </div>
                     </div>
                     {loading ? (
                         <ProgressSpinner />
                     ) : (
                         <section className="w-5/5 bg-white p-4 border border-gray-300  rounded-lg shadow-md">
+                            {clientes.length >= 1 && refresh && (
+                                <div className="mb-4 p-4 bg-orange-100 border-l-4 border-yellow-500 text-yellow-700 rounded-md">
+                                    <p className="font-bold">
+                                        Pagos del cliente
+                                    </p>
+                                    <p>{clientes[0].nombre}</p>
+                                </div>
+                            )}
+
                             <DataTable
                                 value={pagos}
                                 rows={5}
