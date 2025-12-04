@@ -14,7 +14,7 @@ export const initialClienteForm = {
     telefono: "",
     correo: "",
     direccion: "",
-    sede: { sedeId: 0 },
+    sede: { sedeId: 0, nombre: "" },
     fechaPago: "",
     mensualidad: 150.0,
     descripcion: "",

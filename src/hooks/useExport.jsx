@@ -76,8 +76,8 @@ export default function useExport() {
 
     const exportPDF = (
         data,
+        titulo,
         filename = "export",
-        title = "Reporte de Pagos"
     ) => {
         const rows = datos(data);
         if (rows.length === 0) {
@@ -93,7 +93,7 @@ export default function useExport() {
         }));
         const body = rows.map((row) => Object.values(row));
 
-        doc.text(title, 14, 15);
+        doc.text(`Reporte de ${titulo}`, 14, 15);
 
         autoTable(doc, {
             head: [Object.keys(rows[0]).map((key) => key.toUpperCase())],

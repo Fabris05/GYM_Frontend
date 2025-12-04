@@ -5,6 +5,7 @@ import { PrimeReactProvider } from "primereact/api";
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
+import NextTopLoader from 'nextjs-toploader';
 
 
 const geistSans = Geist({
@@ -32,6 +33,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NextTopLoader
+          color="#290ff0ff"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={7}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 15px #eab308,0 0 9px #eab308"
+          zIndex={1600}
+        />
         <PrimeReactProvider value={{ ripple: true }}>
           {children}
         </PrimeReactProvider>

@@ -124,6 +124,7 @@ export default function ClientPage() {
                             exportCSV={exportCSV}
                             exportExcel={exportExcel}
                             exportPDF={exportPDF}
+                            titulo="Clientes"
                         />
                         <SearchCliente fetchClientes={fetchClientes} />
                     </div>

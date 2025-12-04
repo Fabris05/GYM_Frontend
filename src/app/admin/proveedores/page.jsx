@@ -65,6 +65,7 @@ export default function PageProveedores() {
                                 exportCSV={exportCSV}
                                 exportExcel={exportExcel}
                                 exportPDF={exportPDF}
+                                titulo={"Proveedores"}
                             />
                         </div>
 

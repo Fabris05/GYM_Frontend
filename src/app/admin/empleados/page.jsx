@@ -125,6 +125,7 @@ export default function page() {
                                 exportCSV={exportCSV}
                                 exportExcel={exportExcel}
                                 exportPDF={exportPDF}
+                                titulo={"Empleados"}
                             />
                         </div>
 

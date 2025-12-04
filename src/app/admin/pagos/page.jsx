@@ -68,6 +68,7 @@ export default function PagosPage() {
                                 exportCSV={exportCSV}
                                 exportExcel={exportExcel}
                                 exportPDF={exportPDF}
+                                titulo={"Pagos"}
                             />
                         </div>
                         <div className="">

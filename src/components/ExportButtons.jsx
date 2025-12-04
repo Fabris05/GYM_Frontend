@@ -5,6 +5,7 @@ export default function ExportButtons({
     exportCSV,
     exportExcel,
     exportPDF,
+    titulo,
 }) {
     return (
         <div className="flex align-items-center justify-content-start gap-3">
@@ -27,7 +28,7 @@ export default function ExportButtons({
                 icon="pi pi-file-pdf"
                 severity="warning"
                 rounded
-                onClick={() => exportPDF(data)}
+                onClick={() => exportPDF(data, titulo)}
             />
         </div>
     );
